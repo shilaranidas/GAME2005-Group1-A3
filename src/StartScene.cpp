@@ -93,8 +93,8 @@ void StartScene::start()
 
 	// Scene2 Button
 	//m_pScene2Button = new Button();
-	m_pScene2Button = new Button("../Assets/textures/scene2.png", "scene1Button", START_BUTTON, glm::vec2(300.0f, 400.0f), false);
-	m_pScene2Button->getTransform()->position = glm::vec2(500.0f, 400.0f);
+	m_pScene2Button = new Button("../Assets/textures/scene2.png", "scene2Button", START_BUTTON, glm::vec2(400.0f, 400.0f), false);
+	//m_pScene2Button->getTransform()->position = glm::vec2(500.0f, 400.0f);
 
 	m_pScene2Button->addEventListener(CLICK, [&]()-> void
 		{
