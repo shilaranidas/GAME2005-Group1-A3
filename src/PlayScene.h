@@ -36,7 +36,7 @@ private:
 
 	//Plane* m_pPlaneSprite;
 	//Player* m_pPlayer;
-	Target* m_pLoot;
+	//Target* m_pLoot;
 	Ship* m_pStormtrooper;
 	bool m_playerFacingRight;
 
@@ -50,31 +50,26 @@ private:
 	Label* m_pInstructionsLabel;
 	//mass, position, velocity, acceleration
 	Label* m_pMass;
-	Label* m_pRise;
+	
 	Label* m_pVel;
 	Label* m_pAcce;
-	Label* m_pAng;
+
 	Label* m_pForce;
-	Label* m_pRun;
-	Label* m_pFriction;
+
+	
 	int fl = 510.0f;
 
 
 	// Physics Variables
-	bool m_isFrictionSurface = false;
-	bool* m_isFrictionSurfacePtr = &m_isFrictionSurface;
 	
 
 	float m_PPM = 5.0f; // pixels per meter - scale
-	float m_friction = 0.0f;
+	
 
 
 	int m_distance = 485;
 	//float m_Force = 0.0f;
 	
-	
-	int rampWidthMeter = 4;
-	int rampHeightMeter = 3;
 	
 	
 

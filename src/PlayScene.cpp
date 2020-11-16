@@ -119,23 +119,21 @@ void PlayScene::handleEvents()
 	}
 }
 void PlayScene::reset() {
-	m_isFrictionSurface = false;
+	
 	//m_pStormtrooper->getTransform()->position = glm::vec2(585.0f, fl);
-	m_pLoot->m_gravity = 9.8f;
+	//m_pLoot->m_gravity = 9.8f;
 	m_PPM = 1.0f;
-	rampHeightMeter = 150;
-	rampWidthMeter = 150;
-	m_pLoot->m_mass = 12.5f;
-	m_pLoot->m_PPM = 1.0f;
-	m_pLoot->m_Atime = 0.016667f;
-	m_pLoot->m_angle = 0.0f;
-	m_pLoot->m_velocity = 0.0f;
-	m_pLoot->m_velocityX = 0.0f;
-	m_pLoot->m_velocityY = 0.0f;
-	m_pLoot->m_acceleration = glm::vec2(0.0f, 0.0f);
-	m_pLoot->throwSpeed = glm::vec2(0.0f, 0.0f);
-	m_pLoot->buttonPressed = false;
-	m_pLoot->isGravityEnabled = false;
+	//m_pLoot->m_mass = 12.5f;
+	//m_pLoot->m_PPM = 1.0f;
+	//m_pLoot->m_Atime = 0.016667f;
+	//m_pLoot->m_angle = 0.0f;
+	//m_pLoot->m_velocity = 0.0f;
+	//m_pLoot->m_velocityX = 0.0f;
+	//m_pLoot->m_velocityY = 0.0f;
+	//m_pLoot->m_acceleration = glm::vec2(0.0f, 0.0f);
+	//m_pLoot->throwSpeed = glm::vec2(0.0f, 0.0f);
+	//m_pLoot->buttonPressed = false;
+	//m_pLoot->isGravityEnabled = false;
 	
 }
 void PlayScene::start()
@@ -145,8 +143,8 @@ void PlayScene::start()
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 	//// Ball Sprite
-	m_pLoot = new Target();
-	addChild(m_pLoot);
+	//m_pLoot = new Target();
+	//addChild(m_pLoot);
 
 	
 
@@ -206,21 +204,12 @@ void PlayScene::start()
 	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
 	addChild(m_pVel);
 	
-	m_pAng = new Label("Angle: 45degree", "Consolas", 20, white);
-	m_pAng->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 50.0f);
-	addChild(m_pAng);
-	m_pRise = new Label("Ramp Rise: 3m", "Consolas", 20, white);
-	m_pRise->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 70.0f);
-	addChild(m_pRise);
-	m_pRun = new Label("Ramp Run: 4m", "Consolas", 20, white);
-	m_pRun->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f, 90.0f);
-	addChild(m_pRun);
+	
+	
 	m_pForce = new Label("Force: 50N", "Consolas", 20, white);
 	m_pForce->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f,110.0f);
 	addChild(m_pForce);
-	m_pFriction = new Label("Coefficient of friction: 0.42", "Consolas", 20, white);
-	m_pFriction->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 130.0f);
-	addChild(m_pFriction);
+	
 	m_pAcce = new Label("Acceleration: 3m/s^2", "Consolas", 20, white);
 	m_pAcce->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 150.0f);
 	addChild(m_pAcce);
@@ -228,50 +217,21 @@ void PlayScene::start()
 
 }
 void PlayScene::changeLabel() {
-	std::string text = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
-	m_pVel->setText(text);
-	text = "Mass: " + std::to_string(m_pLoot->m_mass) + " Kg";//Mass: 12.8Kg
-	m_pAng->setText(text);
-	text = "Angle: " + std::to_string(m_pLoot->m_angle) + " degree";//Angle: 45degree
-	m_pAng->setText(text);
+	//std::string text = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
+	//m_pVel->setText(text);
+	//text = "Mass: " + std::to_string(m_pLoot->m_mass) + " Kg";//Mass: 12.8Kg
+	//m_pMass->setText(text);
+	;
 	//text = "distance: " + std::to_string(m_pStormtrooper->getTransform()->position.x- m_pBall->getTransform()->position.x) + " m";//Angle: 45degree
-	text = "Rise: " + std::to_string(rampHeightMeter) + " m";
-	m_pRise->setText(text);
-	text = "Force: " + std::to_string(m_pLoot->m_pF) + " N";
-	m_pForce->setText(text);
-	text = "Run: " + std::to_string(rampWidthMeter) + " m";
-	m_pRun->setText(text);
-	text = "Coefficient of friction: " + std::to_string(m_friction) ;//Angle: 45degree
-	m_pFriction->setText(text);
-	std::cout << "labl" <<  m_pLoot->m_accelerationVal << std::endl;
-	text = "Acceleration: " + std::to_string(m_pLoot->m_accelerationVal);//Angle: 45degree
-	m_pAcce->setText(text);
+
+	//text = "Force: " + std::to_string(m_pLoot->m_pF) + " N";
+	//m_pForce->setText(text);
+
+	//std::cout << "labl" <<  m_pLoot->m_accelerationVal << std::endl;
+	//text = "Acceleration: " + std::to_string(m_pLoot->m_accelerationVal);//Angle: 45degree
+	//m_pAcce->setText(text);
 }
-void PlayScene::Calculation() {
-	m_pLoot->m_angle = Util::Rad2Deg * atan((rampHeightMeter * m_PPM) / (rampWidthMeter * m_PPM));
-	if (!m_isFrictionSurface)
-	{
-		//force at time 0
-		m_pLoot->m_pF = m_pLoot->m_mass * m_pLoot->m_gravity * sin(Util::Deg2Rad * m_pLoot->m_angle);
-	}
-	else
-	{
-		m_pLoot->m_pF = m_pLoot->m_mass * m_pLoot->m_gravity * m_friction;
-	}
-	m_pLoot->m_accelerationVal = m_pLoot->m_pF/m_pLoot->m_mass;
-	//intitial velocity components//v_i=√2gh
-	m_pLoot->m_velocity = sqrt(2* m_pLoot->m_gravity*rampHeightMeter);
-	m_pLoot->m_velocityX = (m_pLoot->m_velocity * m_PPM) * cos(m_pLoot->m_angle * Util::Deg2Rad);
-	m_pLoot->m_velocityY = (m_pLoot->m_velocity * m_PPM) * sin(m_pLoot->m_angle * Util::Deg2Rad);
-	// initial velocity vector
-	//std::cout << "st" << m_pLoot->m_velocityX << "," << m_pLoot->m_velocityY << std::endl;
-	glm::vec2 velocity_vector = glm::vec2(m_pLoot->m_velocityX, m_pLoot->m_velocityY);
-	m_pLoot->m_acceleration = glm::vec2(m_pLoot->m_accelerationVal * cos(m_pLoot->m_angle * Util::Deg2Rad) * m_PPM,
-		m_pLoot->m_accelerationVal  * sin(m_pLoot->m_angle * Util::Deg2Rad) * m_PPM);
-	std::cout << "a" << m_pLoot->m_acceleration.x << "," << m_pLoot->m_acceleration.y << ", " << m_pLoot->m_accelerationVal << std::endl;
-	m_pLoot->throwSpeed = velocity_vector;
-	
-}
+
 
 void PlayScene::GUI_Function() 
 {
@@ -289,39 +249,9 @@ void PlayScene::GUI_Function()
 	if (buttonPressed)
 	{
 		
-		m_pLoot->doThrow();
+		//m_pLoot->doThrow();
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("Reset All"))
-	{
-		reset();
-	}
-	ImGui::Separator();
 	
-	
-	ImGui::Separator();
-	static int xPlayerPos = 150;
-	
-	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 0.1f, 30.0f, "%.1f"))
-	{
-		m_pLoot->m_PPM = m_PPM;
-	}
-	if (ImGui::SliderFloat("Mass of crate (Kg)", &m_pLoot->m_mass, 0.1f, 30.0f, "%.1f"));
-	if (ImGui::SliderFloat("force of friction", &m_friction, 0.03f, 1.0f, "%.3f"));
-	
-	
-	
-	glm::vec2 point = glm::vec2(150, 400);
-	if (ImGui::SliderInt("Ramp Width(m)", &rampWidthMeter, 0, (Config::SCREEN_WIDTH - 200)/m_PPM));
-	
-	if (ImGui::SliderInt("Ramp Height(m)", &rampHeightMeter, 0, (Config::SCREEN_HEIGHT - 250)/m_PPM));
-	
-
-	Util::DrawLine(point, glm::vec2(point.x, point.y - rampHeightMeter * m_PPM), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
-	Util::DrawLine(point, glm::vec2(point.x + rampWidthMeter * m_PPM, point.y), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
-	Util::DrawLine(glm::vec2(point.x + rampWidthMeter * m_PPM, point.y), glm::vec2(point.x, point.y - rampHeightMeter * m_PPM), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
-	m_pLoot->getTransform()->position = glm::vec2(point.x,point.y - rampHeightMeter * m_PPM -20);//glm::vec2(xPlayerPos + 40.0f, fl);
-	Calculation();
 	changeLabel();
 	
 	
