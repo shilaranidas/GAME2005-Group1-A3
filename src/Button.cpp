@@ -12,7 +12,7 @@
  * @param position 
  * @param is_centered 
  */
-Button::Button(const std::string& image_path, std::string button_name, const GameObjectType type,
+Button::Button(std::string image_path, std::string button_name, const GameObjectType type,
                const glm::vec2 position, const bool is_centered):
 m_alpha(255), m_name(std::move(button_name)), m_isCentered(is_centered), m_active(true)
 {

@@ -68,26 +68,50 @@ void StartScene::start()
 	m_pTeamLabel1->setParent(this);
 	addChild(m_pTeamLabel1);
 	
-	// Start Button
-	m_pStartButton = new Button();
-	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 400.0f); 
+	// Scene1 Button
+	m_pScene1Button = new Button("../Assets/textures/scene1.png","scene1Button",START_BUTTON, glm::vec2(250.0f, 400.0f),false);
+	//m_pScene1Button.im
+	//m_pScene1Button->getTransform()->position = glm::vec2(300.0f, 400.0f); 
 
-	m_pStartButton->addEventListener(CLICK, [&]()-> void
+	m_pScene1Button->addEventListener(CLICK, [&]()-> void
 	{
-		m_pStartButton->setActive(false);
+		m_pScene1Button->setActive(false);
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	});
 	
-	m_pStartButton->addEventListener(MOUSE_OVER, [&]()->void
+	m_pScene1Button->addEventListener(MOUSE_OVER, [&]()->void
 	{
-		m_pStartButton->setAlpha(128);
+		m_pScene1Button->setAlpha(128);
 	});
 
-	m_pStartButton->addEventListener(MOUSE_OUT, [&]()->void
+	m_pScene1Button->addEventListener(MOUSE_OUT, [&]()->void
 	{
-		m_pStartButton->setAlpha(255);
+		m_pScene1Button->setAlpha(255);
 	});
-	addChild(m_pStartButton);
+	addChild(m_pScene1Button);
+
+
+	// Scene2 Button
+	//m_pScene2Button = new Button();
+	m_pScene2Button = new Button("../Assets/textures/scene2.png", "scene1Button", START_BUTTON, glm::vec2(300.0f, 400.0f), false);
+	m_pScene2Button->getTransform()->position = glm::vec2(500.0f, 400.0f);
+
+	m_pScene2Button->addEventListener(CLICK, [&]()-> void
+		{
+			m_pScene2Button->setActive(false);
+			TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		});
+
+	m_pScene2Button->addEventListener(MOUSE_OVER, [&]()->void
+		{
+			m_pScene2Button->setAlpha(128);
+		});
+
+	m_pScene2Button->addEventListener(MOUSE_OUT, [&]()->void
+		{
+			m_pScene2Button->setAlpha(255);
+		});
+	addChild(m_pScene2Button);
 
 	
 }
