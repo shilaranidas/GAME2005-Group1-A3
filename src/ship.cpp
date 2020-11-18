@@ -3,10 +3,12 @@
 #include "PlayScene.h"
 #include "TextureManager.h"
 #include "Util.h"
+#include "CircleCollider.h"
+#include <algorithm>
 
-Ship::Ship() : m_maxSpeed(10.0f)
+Ship::Ship() :m_maxSpeed(10.0f), m_currentDirection(glm::vec2(0.0f,-1.0f))
 {
-	TextureManager::Instance()->load("../Assets/textures/ship3.png","ship");
+	TextureManager::Instance()->load("../Assets/textures/shipM.png","ship");
 
 	auto size = TextureManager::Instance()->getTextureSize("ship");
 	setWidth(size.x);
@@ -17,10 +19,8 @@ Ship::Ship() : m_maxSpeed(10.0f)
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(SHIP);
+	setCollisionShape(RECTANGLE);
 	
-	m_currentHeading = 0.0f; // current facing angle
-	m_currentDirection = glm::vec2(1.0f, 0.0f); // facing right
-	m_turnRate = 5.0f; // 5 degrees per frame
 }
 
 
@@ -34,9 +34,24 @@ void Ship::draw()
 	const auto y = getTransform()->position.y;
 
 	// draw the ship
-	TextureManager::Instance()->draw("ship", x, y, m_currentHeading, 255, true);
+	TextureManager::Instance()->draw("ship", x, y, 0, 255, true);
 }
-
+float Ship::getMaxSpeed() const
+{
+	return m_maxSpeed;
+}
+void Ship::setMaxSpeed(float newSpeed)
+{
+	m_maxSpeed = newSpeed;
+}
+glm::vec2 Ship::getCurrentDirection() const
+{
+	return m_currentDirection;
+}
+void Ship::setCurrentDirection(glm::vec2 newDirection)
+{
+	m_currentDirection = newDirection;
+}
 
 void Ship::update()
 {
@@ -48,73 +63,24 @@ void Ship::clean()
 {
 }
 
-void Ship::turnRight()
-{
-	m_currentHeading += m_turnRate;
-	if (m_currentHeading >= 360) 
-	{
-		m_currentHeading -= 360.0f;
-	}
-	m_changeDirection();
-}
 
-void Ship::turnLeft()
-{
-	m_currentHeading -= m_turnRate;
-	if (m_currentHeading < 0)
-	{
-		m_currentHeading += 360.0f;
-	}
 
-	m_changeDirection();
-}
 
-void Ship::moveForward()
-{
-	getRigidBody()->velocity = m_currentDirection * m_maxSpeed;
-}
 
-void Ship::moveBack()
-{
-	getRigidBody()->velocity = m_currentDirection * -m_maxSpeed;
-}
+
 
 void Ship::move()
 {
-	getTransform()->position += getRigidBody()->velocity;
+	const float deltaTime = 1.0f / 60.f;
+	getTransform()->position += getRigidBody()->velocity* deltaTime* m_PPM;
 	getRigidBody()->velocity *= 0.9f;
 }
 
-glm::vec2 Ship::getTargetPosition() const
-{
-	return m_targetPosition;
-}
 
-glm::vec2 Ship::getCurrentDirection() const
-{
-	return m_currentDirection;
-}
 
-float Ship::getMaxSpeed() const
-{
-	return m_maxSpeed;
-}
 
-void Ship::setTargetPosition(glm::vec2 newPosition)
-{
-	m_targetPosition = newPosition;
 
-}
 
-void Ship::setCurrentDirection(glm::vec2 newDirection)
-{
-	m_currentDirection = newDirection;
-}
-
-void Ship::setMaxSpeed(float newSpeed)
-{
-	m_maxSpeed = newSpeed;
-}
 
 
 
@@ -152,12 +118,5 @@ void Ship::m_reset()
 	getTransform()->position = glm::vec2(xComponent, yComponent);
 }
 
-void Ship::m_changeDirection()
-{
-	const auto x = cos(m_currentHeading * Util::Deg2Rad);
-	const auto y = sin(m_currentHeading * Util::Deg2Rad);
-	m_currentDirection = glm::vec2(x, y);
 
-	glm::vec2 size = TextureManager::Instance()->getTextureSize("ship");
-}
 

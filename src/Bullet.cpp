@@ -2,6 +2,7 @@
 //#include "glm/gtx/string_cast.hpp"
 //#include "PlayScene.h"
 #include "TextureManager.h"
+#include "Util.h"
 //#include "Util.h"
 //#include "Game.h"
 
@@ -16,6 +17,7 @@ Bullet::Bullet()
 	getTransform()->position = glm::vec2(700.0f, 300.0f);
 	
 	setType(BULLET);
+	setCollisionShape(RECTANGLE);
 	Reset();
 	/*nextPosition = 0;
 	pixelsPerMeter = 1;
@@ -57,6 +59,8 @@ void Bullet::draw()
 	//}
 	// draw the Bullet
 	TextureManager::Instance()->draw("bullet", x, y, 0, 255, true);
+	//Util::DrawCapsule(getTransform()->position , getWidth(), getHeight());
+	Util::DrawRect(getTransform()->position - glm::vec2(getWidth() * 0.5f, getHeight() * 0.5f), getWidth(), getHeight());
 }
 
  

@@ -5,13 +5,13 @@
 #include "Scene.h"
 #include "Plane.h"
 //#include "Target.h"
-//#include "ship.h"
-#include "Player.h"
+#include "ship.h"
+//#include "Player.h"
 #include "Button.h"
 #include "Label.h"
 #include "Bullet.h"
 #include "BulletPool.h"
-
+#include "SoundManager.h"
 
 class PlayScene : public Scene
 {
@@ -43,8 +43,8 @@ private:
 	//Plane* m_pPlaneSprite;
 	BulletPool* m_pPool;
 	
-	Player* m_pPlayer;
-	//Target* m_pLoot;
+	Ship* m_pPlayer;
+	//Bullet* bullet;
 	//Ship* m_pStormtrooper;
 	//bool m_playerFacingRight;
 

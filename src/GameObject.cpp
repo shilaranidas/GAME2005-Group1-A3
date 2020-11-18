@@ -57,3 +57,13 @@ bool GameObject::isEnabled() const
 {
 	return m_enabled;
 }
+
+void GameObject::setCollisionShape(CollisionShape newCollisionShape)
+{
+	m_collisionShape = newCollisionShape;
+}
+
+CollisionShape GameObject::getCollisionShape()
+{
+	return m_collisionShape;
+}

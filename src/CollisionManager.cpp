@@ -29,7 +29,7 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 			switch (object2->getType()) {
 			case TARGET:
 				std::cout << "Collision with Target!" << std::endl;
-				SoundManager::Instance().playSound("yay", 0);
+				SoundManager::Instance().playSound("yay");
 
 				
 				break;
@@ -52,28 +52,44 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 {
 	// prepare relevant variables
-	const auto p1 = object1->getTransform()->position;
-	const auto p2 = object2->getTransform()->position;
+	
 	const float p1Width = object1->getWidth();
 	const float p1Height = object1->getHeight();
 	const float p2Width = object2->getWidth();
 	const float p2Height = object2->getHeight();
-
+	//as here I drawn all object as centered position
+	const auto p1 = object1->getTransform()->position - glm::vec2(p1Width * 0.5f, p1Height * 0.5f);
+	const auto p2 = object2->getTransform()->position - glm::vec2(p2Width * 0.5f, p2Height * 0.5f);
+	/*SDL_Rect rectangleA;
+	rectangleA.x = p1.x-p1Width*0.5f;
+	rectangleA.y = p1.y - p1Height * 0.5f;
+	rectangleA.w = p1Width;
+	rectangleA.h = p1Height;
+	SDL_Rect rectangleB;
+	rectangleB.x = p2.x - p2Width * 0.5f;
+	rectangleB.y = p2.y - p2Height * 0.5f;
+	rectangleB.w = p2Width;
+	rectangleB.h = p2Height;*/
 	if (
 		p1.x < p2.x + p2Width &&
 		p1.x + p1Width > p2.x&&
 		p1.y < p2.y + p2Height &&
 		p1.y + p1Height > p2.y
 		)
+	//if (!(p1.y >= p2.y + p2Height || // p.top > b.bottom
+	//	p1.y + p1Height <= p2.y || // p.bottom < b.top
+	//	p1.x >= p2.x + p2Width || // p.left > b.right
+	//	p1.x + p1Width <= p2.x))  // p.right < b.left
+	//if (SDL_HasIntersection(&rectangleA, &rectangleB))
 	{
 		if (!object2->getRigidBody()->isColliding) {
 
 			object2->getRigidBody()->isColliding = true;
 
 			switch (object2->getType()) {
-			case TARGET:
-				std::cout << "Collision with Target!" << std::endl;
-				SoundManager::Instance().playSound("yay", 0);
+			case SHIP:
+				std::cout << "Collision with player!" <<p1.x<<","<<p1.y<<","<<p1Width<<","<<p1Height<<";"<<p2.x<<","<<p2.y<<","<<p2Width<<","<<p2Height<< std::endl;
+				SoundManager::Instance().playSound("yay");
 				break;
 			default:
 				

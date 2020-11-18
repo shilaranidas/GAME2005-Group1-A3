@@ -22,20 +22,26 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	TextureManager::Instance()->draw("bg", Config::SCREEN_WIDTH/2, Config::SCREEN_HEIGHT/2, 0, 255, true);
-
+	//bullet->draw();
 	
 	drawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 	if (EventManager::Instance().isIMGUIActive())
 	{
 		GUI_Function();
+		Util::DrawRect(m_pPlayer->getTransform()->position - glm::vec2(m_pPlayer->getWidth() * 0.5f, m_pPlayer->getHeight() * 0.5f), m_pPlayer->getWidth(), m_pPlayer->getHeight());
+		//Util::DrawCapsule(m_pPlayer->getTransform()->position, m_pPlayer->getWidth(), m_pPlayer->getHeight());
+		
 	}
+	
 
 }
 
 void PlayScene::update()
 {
 	updateDisplayList();
+	//Util::DrawIntersectRect(bullet->getTransform()->position, bullet->getWidth(), bullet->getHeight(), m_pPlayer->getTransform()->position, m_pPlayer->getWidth(), m_pPlayer->getHeight());
+	//CollisionManager::AABBCheck(bullet, m_pPlayer);
 	if (m_pPool != NULL)
 	{
 		if (SDL_GetTicks() - bulletSpawnTimerStart >= bulletSpawnTimerDuration) {
@@ -45,6 +51,7 @@ void PlayScene::update()
 		for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
 		{
 			Bullet* bullet = *myiter;
+			CollisionManager::AABBCheck(bullet, m_pPlayer);
 			if (bullet->active && bullet->getTransform()->position.y >= 650)
 			{
 				m_pPool->Despawn(bullet);
@@ -125,7 +132,23 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->quit();
 	}
-
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
+	{
+		m_pPlayer->getRigidBody()->velocity = glm::vec2(-m_pPlayer->SPEED, 0.0f);
+	}
+	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
+	{
+		m_pPlayer->getRigidBody()->velocity = glm::vec2(m_pPlayer->SPEED, 0.0f);
+	}
+	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W)) {
+		m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, -m_pPlayer->SPEED);
+	}
+	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S)) {
+		m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, m_pPlayer->SPEED);
+	}
+	else {
+		m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		TheGame::Instance()->changeSceneState(START_SCENE);
@@ -159,19 +182,21 @@ void PlayScene::start()
 {
 	//load background from texture.
 	TextureManager::Instance()->load("../Assets/textures/bg.png", "bg");
+	SoundManager::Instance().load("../Assets/audio/yay.ogg", "yay", SOUND_SFX);
 	// Set GUI Title
 	m_guiTitle = "Play Scene 1";
 	//// Ball Sprite
-	//m_pLoot = new Target();
-	//addChild(m_pLoot);
+	//bullet = new Bullet();
+	//bullet->getTransform()->position = glm::vec2(300, 300);
+	//addChild(bullet);
 	
-	m_pPlayer = new Player();
+	m_pPlayer = new Ship();
 	addChild(m_pPlayer);
 	
 	
 	// Back Button
-	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 450.0f);
+	m_pBackButton = new Button("../Assets/textures/back.png", "backButton", BACK_BUTTON);
+	m_pBackButton->getTransform()->position = glm::vec2(60.0f, 560.0f);
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
@@ -190,8 +215,8 @@ void PlayScene::start()
 	addChild(m_pBackButton);
 
 	// Next Button
-	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(500.0f, 450.0f);
+	m_pNextButton = new Button("../Assets/textures/next.png", "nextButton", NEXT_BUTTON);
+	m_pNextButton->getTransform()->position = glm::vec2(740.0f, 560.0f);
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
@@ -213,7 +238,7 @@ void PlayScene::start()
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Menu", "Consolas",15,white);
 	
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 490.0f);
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 570.0f);
 
 	addChild(m_pInstructionsLabel);
 	
@@ -238,11 +263,13 @@ void PlayScene::start()
 
 }
 void PlayScene::StartSimulation() {
+	m_pPlayer->m_PPM = m_PPM;
 	m_pPool = new BulletPool(m_noOfBullet);
 	//add each one to scene
 	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
 	{
 		Bullet* bullet = *myiter;
+
 		addChild(bullet);
 	}
 	bulletSpawnTimerStart = SDL_GetTicks();
@@ -291,6 +318,7 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 0.1f, 30.0f, "%.1f"));
 	
 	if (ImGui::SliderInt("No of Bullet", &m_noOfBullet, 0, 100));
+	
 	changeLabel();
 	
 	
@@ -320,6 +348,7 @@ void PlayScene::SpawnBullet() {
 	{
 		bullet->m_PPM = m_PPM;
 		bullet->getTransform()->position = glm::vec2(50 + rand() % 700, 0);
+		
 	}
 	bulletSpawnTimerStart = SDL_GetTicks();
 }

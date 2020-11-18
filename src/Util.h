@@ -44,8 +44,9 @@ public:
 	// debugging convenience functions
 	static void DrawLine(glm::vec2 start, glm::vec2 end, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	static void DrawRect(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	static void DrawIntersectRect(glm::vec2 positionA, int widthA, int heightA, glm::vec2 positionB, int widthB, int heightB, glm::vec4 colour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	static void DrawCircle(glm::vec2 centre, int radius, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), ShapeType type = SYMMETRICAL);
-	static void DrawCapsule(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	static void DrawCapsule(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 };
 
 

@@ -195,7 +195,7 @@ void Game::clean() const
 
 	// Clean Up for IMGUI
 	ImGui::DestroyContext();
-	
+	SoundManager::Instance().quit();
 	TTF_Quit();
 
 	SDL_Quit();

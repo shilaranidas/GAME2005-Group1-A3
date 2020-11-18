@@ -8,7 +8,9 @@ SoundManager::SoundManager()
 }
 
 SoundManager::~SoundManager()
-= default;
+{
+	Mix_CloseAudio();
+}
 
 void SoundManager::allocateChannels(const int channels) const
 {
@@ -93,7 +95,7 @@ void SoundManager::resumeMusic() const
 	}	
 }
 
-void SoundManager::playSound(const std::string& id, const int loop/* = 0 */, const int channel/* = -1 */)
+void SoundManager::playSound(const std::string& id, const int loop , const int channel  )
 {
 	if (Mix_PlayChannel(channel, m_sfxs[id], loop) == -1)
 	{

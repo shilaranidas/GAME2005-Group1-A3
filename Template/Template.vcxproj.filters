@@ -28,6 +28,9 @@
     <Filter Include="IMGGUI">
       <UniqueIdentifier>{4c82a7b5-8b34-4e7f-806f-4e1bec83db17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collider">
+      <UniqueIdentifier>{1d482423-bb77-4a6c-a823-7a024dd4bfc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\IMGUI\imgui.cpp">
@@ -265,6 +268,21 @@
     </ClInclude>
     <ClInclude Include="..\src\BulletPool.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BoxCollider.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Collider.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CircleCollider.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CapsuleCollider.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LineCollider.h">
+      <Filter>Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 
 // enums
 #include "GameObjectType.h"
-
+#include "Collider.h"
 
 class GameObject {
 public:
@@ -40,6 +40,8 @@ public:
 
 	void setEnabled(bool state);
 	bool isEnabled() const;
+	void setCollisionShape(CollisionShape newCollisionShape);
+	CollisionShape getCollisionShape();
 
 private:
 	// transform component
@@ -52,7 +54,7 @@ private:
 	int m_width;
 	int m_height;
 	GameObjectType m_type;
-
+	CollisionShape m_collisionShape;
 	bool m_enabled;
 };
 
