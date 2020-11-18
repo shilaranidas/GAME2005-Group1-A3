@@ -27,7 +27,7 @@ public:
 	virtual void start() override;
 	void changeLabel();
 	
-	//void Calculation();
+	void StartSimulation();
 	void reset();
 	
 private:
@@ -57,7 +57,8 @@ private:
 	
 	Label* m_pInstructionsLabel;
 	//mass, position, velocity, acceleration
-	Label* m_pMass;
+	//Label* m_pMass;
+	Label* m_pNoOfBullet;
 	
 	Label* m_pVel;
 	Label* m_pAcce;
@@ -71,11 +72,11 @@ private:
 	// Physics Variables
 	
 
-	float m_PPM = 5.0f; // pixels per meter - scale
+	float m_PPM = 1.0f; // pixels per meter - scale
 	
 
 
-	//int m_distance = 485;
+	int m_noOfBullet = 10;
 	float m_Force = 0.0f;
 	
 	

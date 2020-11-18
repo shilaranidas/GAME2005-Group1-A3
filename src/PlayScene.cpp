@@ -36,17 +36,20 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-	if (SDL_GetTicks()-bulletSpawnTimerStart>=bulletSpawnTimerDuration) {
-		SpawnBullet();
-	}
-	
-	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
+	if (m_pPool != NULL)
 	{
-		Bullet* bullet = *myiter;
-		if (bullet->active && bullet->getTransform()->position.y >= 650)
+		if (SDL_GetTicks() - bulletSpawnTimerStart >= bulletSpawnTimerDuration) {
+			SpawnBullet();
+		}
+
+		for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
 		{
-			m_pPool->Despawn(bullet);
-			break;
+			Bullet* bullet = *myiter;
+			if (bullet->active && bullet->getTransform()->position.y >= 650)
+			{
+				m_pPool->Despawn(bullet);
+				break;
+			}
 		}
 	}
 }
@@ -137,6 +140,7 @@ void PlayScene::reset() {
 	
 	//m_pStormtrooper->getTransform()->position = glm::vec2(585.0f, fl);
 	//m_pLoot->m_gravity = 9.8f;
+	m_pPool = NULL;
 	m_PPM = 1.0f;
 	//m_pLoot->m_mass = 12.5f;
 	//m_pLoot->m_PPM = 1.0f;
@@ -163,16 +167,8 @@ void PlayScene::start()
 	
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
-	m_pPool = new BulletPool(10);
-	//add each one to scene
-	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter!= m_pPool->all.end(); myiter++)
-	{
-		Bullet* bullet = *myiter;
-		addChild(bullet);
-	}
-	bulletSpawnTimerStart = SDL_GetTicks();
-	/*m_pBullet = new Bullet();
-	addChild(m_pBullet);*/
+	
+	
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 450.0f);
@@ -221,9 +217,9 @@ void PlayScene::start()
 
 	addChild(m_pInstructionsLabel);
 	
-	m_pMass = new Label("Mass: 12.8Kg", "Consolas", 20, white);
-	m_pMass->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.9f, 10.0f);
-	addChild(m_pMass);
+	m_pNoOfBullet = new Label("No of bullet: 10", "Consolas", 20, white);
+	m_pNoOfBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 10.0f);
+	addChild(m_pNoOfBullet);
 	
 	m_pVel = new Label("Velocity: 95m/s", "Consolas", 20, white);
 	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
@@ -241,11 +237,21 @@ void PlayScene::start()
 	reset();
 
 }
+void PlayScene::StartSimulation() {
+	m_pPool = new BulletPool(m_noOfBullet);
+	//add each one to scene
+	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
+	{
+		Bullet* bullet = *myiter;
+		addChild(bullet);
+	}
+	bulletSpawnTimerStart = SDL_GetTicks();
+}
 void PlayScene::changeLabel() {
-	//std::string text = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
+	std::string text;// = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
 	//m_pVel->setText(text);
-	//text = "Mass: " + std::to_string(m_pLoot->m_mass) + " Kg";//Mass: 12.8Kg
-	//m_pMass->setText(text);
+	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;//Mass: 12.8Kg
+	m_pNoOfBullet->setText(text);
 	;
 	//text = "distance: " + std::to_string(m_pStormtrooper->getTransform()->position.x- m_pBall->getTransform()->position.x) + " m";//Angle: 45degree
 
@@ -273,10 +279,18 @@ void PlayScene::GUI_Function()
 	bool buttonPressed = ImGui::Button("Start Simulation");
 	if (buttonPressed)
 	{
-		
+		StartSimulation();
 		//m_pLoot->doThrow();
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset All"))
+	{
+		reset();
+	}
+	ImGui::Separator();
+	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 0.1f, 30.0f, "%.1f"));
 	
+	if (ImGui::SliderInt("No of Bullet", &m_noOfBullet, 0, 100));
 	changeLabel();
 	
 	
@@ -301,7 +315,11 @@ void PlayScene::GUI_Function()
 }
 void PlayScene::SpawnBullet() {
 	Bullet* bullet = m_pPool->Spawn();
+	
 	if (bullet)
+	{
+		bullet->m_PPM = m_PPM;
 		bullet->getTransform()->position = glm::vec2(50 + rand() % 700, 0);
+	}
 	bulletSpawnTimerStart = SDL_GetTicks();
 }

@@ -67,7 +67,7 @@ void Bullet::update()
 		float deltaTime = 1.0f / 60.0f;
 		//getRigidBody()->acceleration = glm::vec2(0, 9.8 * 3.0);
 		getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
-		getTransform()->position += getRigidBody()->velocity * deltaTime;// *pixelsPerMeter;
+		getTransform()->position += getRigidBody()->velocity * deltaTime * m_PPM;
 	}
 	//else
 		//getRigidBody()->velocity= glm::vec2(0.0f, 0.0f);
@@ -79,8 +79,8 @@ void Bullet::clean()
 }
 void Bullet::Reset()
 {
-	getRigidBody()->acceleration = glm::vec2(0.0f, 9.8f);
-	getRigidBody()->velocity = glm::vec2(0.0f, 9.8f);
+	getRigidBody()->acceleration = glm::vec2(0.0f, m_gravity);
+	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 }
 //void Bullet::addForce(glm::vec2 Amount)

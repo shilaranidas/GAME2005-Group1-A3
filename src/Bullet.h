@@ -20,8 +20,8 @@ public:
 
 //	bool doesUpdate = false;
 	bool active = false;
-	float Gravity=9.8f;
-	float pixelsPerMeter=1.0f;
+	float m_gravity=9.8f;
+	float m_PPM =1.0f;
 	//float Mass;
 	//float nextPosition;
 //	bool showWire;
