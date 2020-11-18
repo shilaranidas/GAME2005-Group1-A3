@@ -4,11 +4,14 @@
 
 #include "Scene.h"
 #include "Plane.h"
-#include "Target.h"
-#include "ship.h"
+//#include "Target.h"
+//#include "ship.h"
 #include "Player.h"
 #include "Button.h"
 #include "Label.h"
+#include "Bullet.h"
+#include "BulletPool.h"
+
 
 class PlayScene : public Scene
 {
@@ -24,21 +27,26 @@ public:
 	virtual void start() override;
 	void changeLabel();
 	
-	void Calculation();
+	//void Calculation();
 	void reset();
 	
 private:
+	const float bulletSpawnTimerDuration = 500.0f;
+	float bulletSpawnTimerStart;
 	// IMGUI Function
 	void GUI_Function() ;
+	void SpawnBullet();
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
-
+	
 	//Plane* m_pPlaneSprite;
-	//Player* m_pPlayer;
+	BulletPool* m_pPool;
+	
+	Player* m_pPlayer;
 	//Target* m_pLoot;
-	Ship* m_pStormtrooper;
-	bool m_playerFacingRight;
+	//Ship* m_pStormtrooper;
+	//bool m_playerFacingRight;
 
 	// UI Items
 	Button* m_pBackButton;
@@ -57,7 +65,7 @@ private:
 	Label* m_pForce;
 
 	
-	int fl = 510.0f;
+	//int fl = 510.0f;
 
 
 	// Physics Variables
@@ -67,8 +75,8 @@ private:
 	
 
 
-	int m_distance = 485;
-	//float m_Force = 0.0f;
+	//int m_distance = 485;
+	float m_Force = 0.0f;
 	
 	
 	
@@ -83,7 +91,7 @@ private:
 
 
 
-	float m_totalTime=0.0f;
+//	float m_totalTime=0.0f;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

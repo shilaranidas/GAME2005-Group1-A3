@@ -6,12 +6,14 @@
 #include "imgui.h"
 #include "imgui_sdl.h"
 #include "Renderer.h"
+//#include "BulletPool.h"
 #include "Util.h"
-#include <string>
+//#include <string>
 
 PlayScene::PlayScene()
 {
 	PlayScene::start();
+	
 }
 
 PlayScene::~PlayScene()
@@ -34,6 +36,19 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+	if (SDL_GetTicks()-bulletSpawnTimerStart>=bulletSpawnTimerDuration) {
+		SpawnBullet();
+	}
+	
+	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
+	{
+		Bullet* bullet = *myiter;
+		if (bullet->active && bullet->getTransform()->position.y >= 650)
+		{
+			m_pPool->Despawn(bullet);
+			break;
+		}
+	}
 }
 
 void PlayScene::clean()
@@ -141,13 +156,23 @@ void PlayScene::start()
 	//load background from texture.
 	TextureManager::Instance()->load("../Assets/textures/bg.png", "bg");
 	// Set GUI Title
-	m_guiTitle = "Play Scene";
+	m_guiTitle = "Play Scene 1";
 	//// Ball Sprite
 	//m_pLoot = new Target();
 	//addChild(m_pLoot);
-
 	
-
+	m_pPlayer = new Player();
+	addChild(m_pPlayer);
+	m_pPool = new BulletPool(10);
+	//add each one to scene
+	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter!= m_pPool->all.end(); myiter++)
+	{
+		Bullet* bullet = *myiter;
+		addChild(bullet);
+	}
+	bulletSpawnTimerStart = SDL_GetTicks();
+	/*m_pBullet = new Bullet();
+	addChild(m_pBullet);*/
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 450.0f);
@@ -273,4 +298,10 @@ void PlayScene::GUI_Function()
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
 	ImGui::StyleColorsDark();
+}
+void PlayScene::SpawnBullet() {
+	Bullet* bullet = m_pPool->Spawn();
+	if (bullet)
+		bullet->getTransform()->position = glm::vec2(50 + rand() % 700, 0);
+	bulletSpawnTimerStart = SDL_GetTicks();
 }
