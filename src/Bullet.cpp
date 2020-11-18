@@ -14,7 +14,7 @@ Bullet::Bullet()
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = glm::vec2(700.0f, 300.0f);
+	//getTransform()->position = glm::vec2(700.0f, 0.0f);
 	
 	setType(BULLET);
 	setCollisionShape(RECTANGLE);
