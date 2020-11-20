@@ -153,11 +153,39 @@ bool CollisionManager::lineRectCheck(const glm::vec2 line1_start, const glm::vec
 	// if ANY of the above are true, the line
 	// has hit the rectangle
 	if (left || right || top || bottom) {
+		std::cout << "Collision with line!" << std::endl;
+		SoundManager::Instance().playSound("yay", 0);
 		return true;
 	}
 
 	return false;
 }
+//bool CollisionManager::lineCircleCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, glm::vec2 circle_centre, int circle_radius)
+//{
+//	const auto x1 = line1_start.x;
+//	const auto x2 = line1_end.x;
+//	const auto y1 = line1_start.y;
+//	const auto y2 = line1_end.y;
+//	const auto rx = rec_start.x;
+//	const auto ry = rec_start.y;
+//	const auto rw = rect_width;
+//	const auto rh = rect_height;
+//
+//	// check if the line has hit any of the rectangle's sides
+//	// uses the Line/Line function below
+//	const auto left = lineLineCheck(glm::vec2(x1, y1), glm::vec2(x2, y2), glm::vec2(rx, ry), glm::vec2(rx, ry + rh));
+//	const auto right = lineLineCheck(glm::vec2(x1, y1), glm::vec2(x2, y2), glm::vec2(rx + rw, ry), glm::vec2(rx + rw, ry + rh));
+//	const auto top = lineLineCheck(glm::vec2(x1, y1), glm::vec2(x2, y2), glm::vec2(rx, ry), glm::vec2(rx + rw, ry));
+//	const auto bottom = lineLineCheck(glm::vec2(x1, y1), glm::vec2(x2, y2), glm::vec2(rx, ry + rh), glm::vec2(rx + rw, ry + rh));
+//
+//	// if ANY of the above are true, the line
+//	// has hit the rectangle
+//	if (left || right || top || bottom) {
+//		return true;
+//	}
+//
+//	return false;
+//}
 
 int CollisionManager::minSquaredDistanceLineLine(glm::vec2 line1_start, glm::vec2 line1_end, glm::vec2 line2_start, glm::vec2 line2_end)
 {
@@ -228,7 +256,89 @@ int CollisionManager::circleAABBsquaredDistance(const glm::vec2 circle_centre, i
 
 	return (dx * dx) + (dy * dy);
 }
+bool CollisionManager::circleLineCheck(GameObject* object1, glm::vec2 line1_start, glm::vec2 line1_end)
+{
+	// circle
+	const auto circleCentre = object1->getTransform()->position;
+	const int circleRadius = std::max(object1->getWidth() * 0.5f, object1->getHeight() * 0.5f);
+	// aabb
+	const auto boxWidth = abs(line1_start.x - line1_end.x);//object2->getWidth();
+	int halfBoxWidth = boxWidth * 0.5f;
+	const auto boxHeight = abs(line1_start.y - line1_end.y);
+	int halfBoxHeight = boxHeight * 0.5f;
 
+	const auto boxStart = line1_start;//object2->getTransform()->position - glm::vec2(boxWidth * 0.5f, boxHeight * 0.5f);
+
+	if (circleAABBsquaredDistance(circleCentre, circleRadius, boxStart, boxWidth, boxHeight) <= (circleRadius * circleRadius))
+	{
+		//if (!object2->getRigidBody()->isColliding) {
+
+			//object2->getRigidBody()->isColliding = true;
+
+			const auto attackVector = object1->getTransform()->position - line1_start;
+			const auto normal = glm::vec2(0.0f, -1.0f);
+
+			const auto dot = Util::dot(attackVector, normal);
+			const auto angle = acos(dot / Util::magnitude(attackVector)) * Util::Rad2Deg;
+
+			//switch (object2->getType()) {
+			//case TARGET:
+			//	std::cout << "Collision with Planet!" << std::endl;
+			//	SoundManager::Instance().playSound("yay", 0);
+			//	break;
+			//case SHIP:
+			//{
+				SoundManager::Instance().playSound("thunder", 0);
+				auto velocityX = object1->getRigidBody()->velocity.x;
+				auto velocityY = object1->getRigidBody()->velocity.y;
+
+				if ((attackVector.x > 0 && attackVector.y < 0) || (attackVector.x < 0 && attackVector.y < 0))
+					// top right or top left
+				{
+
+					if (angle <= 45)
+					{
+						object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
+					}
+					else
+					{
+						object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
+					}
+				}
+
+				if ((attackVector.x > 0 && attackVector.y > 0) || (attackVector.x < 0 && attackVector.y > 0))
+					// bottom right or bottom left
+				{
+					if (angle <= 135)
+					{
+						object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
+					}
+					else
+					{
+						object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
+					}
+				}
+			//}
+
+
+			//break;
+			//default:
+
+				//break;
+			//}
+
+			return true;
+		//}
+		//return false;
+	}
+	else
+	{
+		//object2->getRigidBody()->isColliding = false;
+		return false;
+	}
+
+	return false;
+}
 bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 {
 	// circle

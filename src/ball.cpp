@@ -4,6 +4,7 @@
 //#include "PlayScene.h"
 #include "TextureManager.h"
 #include "Util.h"
+#include "SoundManager.h"
 //#include "Util.h"
 //#include "Game.h"
 
@@ -70,12 +71,23 @@ void Ball::clean()
 }
 void Ball::m_checkBounds()
 {
-	if ((getTransform()->position.y > 600.0f + getHeight() * 0.5f) || // bottom 
-		(getTransform()->position.y < -getHeight() * 0.5f) || // top
-		(getTransform()->position.x > 800.0f + getWidth() * 0.5) || // right
-		(getTransform()->position.x < -getWidth() * 0.5f)) // left
+	
+	auto velocityX = getRigidBody()->velocity.x;
+	auto velocityY = getRigidBody()->velocity.y;
+	if ((getTransform()->position.y > Config::SCREEN_HEIGHT - getHeight() * 0.5f) || // bottom 
+		(getTransform()->position.y < getHeight()*0.5f ))  // top
 	{
-		reset();
+		SoundManager::Instance().playSound("thunder", 0);
+		getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
+		std::cout << "in y"<<std::endl;
+	}
+	if	((getTransform()->position.x > Config::SCREEN_WIDTH -getWidth() * 0.5) || // right
+		(getTransform()->position.x < getWidth() * 0.5f)) // left
+	{
+		SoundManager::Instance().playSound("thunder", 0);
+		getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
+		//reset();
+		std::cout << "in x" << std::endl;
 	}
 }
 //void Ball::Reset()
@@ -91,19 +103,19 @@ void Ball::reset()
 	switch (d4)
 	{
 	case 1: // top
-		getTransform()->position=glm::vec2(Util::RandomRange(getWidth() * 0.5f, 800.0f - getWidth()), -getHeight() * 0.5f);
+		getTransform()->position=glm::vec2(Util::RandomRange(getWidth() , Config::SCREEN_WIDTH - getWidth()), getHeight() );
 		getRigidBody()->velocity=glm::vec2(Util::RandomRange(-1.0f, 1.0f), 1.0f);
 		break;
 	case 2: // right
-		getTransform()->position=glm::vec2(800.0f + getWidth() * 0.5f, Util::RandomRange(getHeight() * 0.5f, 600.0f - getHeight()));
+		getTransform()->position=glm::vec2(Config::SCREEN_WIDTH - getWidth() , Util::RandomRange(getHeight() , Config::SCREEN_HEIGHT - getHeight()));
 		getRigidBody()->velocity=glm::vec2(-1.0f, Util::RandomRange(-1.0f, 1.0f));
 		break;
 	case 3: // bottom
-		getTransform()->position=glm::vec2(Util::RandomRange(getWidth() * 0.5f, 800.0f - getWidth()), 600.0f + getHeight() * 0.5f);
+		getTransform()->position=glm::vec2(Util::RandomRange(getWidth() , Config::SCREEN_WIDTH - getWidth()), Config::SCREEN_HEIGHT - getHeight() );
 		getRigidBody()->velocity=glm::vec2(Util::RandomRange(-1.0f, 1.0f), -1.0f);
 		break;
 	case 4: // left
-		getTransform()->position=glm::vec2(-getWidth() * 0.5f, Util::RandomRange(getHeight() * 0.5f, 600.0f - getHeight()));
+		getTransform()->position=glm::vec2(getWidth() , Util::RandomRange(getHeight() , Config::SCREEN_HEIGHT - getHeight()));	
 		getRigidBody()->velocity=glm::vec2(1.0f, Util::RandomRange(-1.0f, 1.0f));
 		break;
 	}

@@ -36,7 +36,7 @@ private:
 	// IMGUI Function
 	void GUI_Function() ;
 	void SpawnBullet();
-	std::string m_guiTitle;
+	
 	
 	glm::vec2 m_mousePosition;
 	

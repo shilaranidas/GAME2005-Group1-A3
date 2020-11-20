@@ -23,6 +23,7 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
+	void reset();
 
 private:
 	/*Label* m_pStartLabel;
@@ -32,18 +33,25 @@ private:
 	Brick* m_pShip;
 //	MoveState m_moveState;
 	glm::vec2 m_speedFactor;
-
+	
 	
 	// Bullet Stuff
 	Ball* m_pBall;
-	
+	// UI Items
+	Button* m_pBackButton;
+	Button* m_pNextButton;
+
+
+
+
+	Label* m_pInstructionsLabel;
 	//std::vector<Ball*> m_pBalls;
 
 	glm::vec2 m_mousePosition;
 
 	// ImGui utility functions
-	void m_ImGuiKeyMap();
-	void m_ImGuiSetStyle();
+	
+	void StartSimulation();
 	void m_updateUI();
 
 	// ImGui menu variables

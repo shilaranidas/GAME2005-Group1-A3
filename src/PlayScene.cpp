@@ -217,8 +217,7 @@ void PlayScene::start()
 	//load background from texture.
 	TextureManager::Instance()->load("../Assets/textures/bg.png", "bg");
 	SoundManager::Instance().load("../Assets/audio/death.wav", "yay", SOUND_SFX);
-	// Set GUI Title
-	m_guiTitle = "Play Scene 1";
+	
 	//// Ball Sprite
 	//bullet = new Bullet();
 	//bullet->getTransform()->position = glm::vec2(300, 300);
