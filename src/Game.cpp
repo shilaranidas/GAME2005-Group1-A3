@@ -157,7 +157,11 @@ void Game::changeSceneState(const SceneState new_state)
 		case PLAY_SCENE:
 			m_currentScene = new PlayScene();
 			std::cout << "play scene activated" << std::endl;
-			break;
+			break;		
+		/*case SCENE_2:
+			m_currentScene = new S;
+			std::cout << "scene2 activated" << std::endl;
+			break;*/
 		case END_SCENE:
 			m_currentScene = new EndScene();
 			std::cout << "end scene activated" << std::endl;

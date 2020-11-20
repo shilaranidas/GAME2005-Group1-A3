@@ -3,7 +3,7 @@
 #define __BULLETPOOL__
 #include "Bullet.h"
 #include <vector>
-
+//#include <list>
 class BulletPool
 {
 public:
@@ -12,9 +12,14 @@ public:
 
 	Bullet* Spawn();
 	void Despawn(Bullet*);
+	void ResetAll();
 	std::vector<Bullet*> all;
+	std::vector<Bullet*> active;
+	std::vector<bool> activeColliding;
+	//bool* activeColliding;
+	//std::list<bool> activeColliding;
 private:
 	std::vector<Bullet*> inactive;
-	std::vector<Bullet*> active;
+	
 };
 #endif /* defined (__BULLETPOOL__) */

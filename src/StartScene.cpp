@@ -7,6 +7,7 @@
 
 #include "Renderer.h"
 
+
 StartScene::StartScene()
 {
 	StartScene::start();
@@ -46,7 +47,7 @@ void StartScene::handleEvents()
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
 }
 
@@ -103,7 +104,7 @@ void StartScene::start()
 	m_pScene2Button->addEventListener(CLICK, [&]()-> void
 		{
 			m_pScene2Button->setActive(false);
-			TheGame::Instance()->changeSceneState(PLAY_SCENE);
+			TheGame::Instance()->changeSceneState(END_SCENE);
 		});
 
 	m_pScene2Button->addEventListener(MOUSE_OVER, [&]()->void

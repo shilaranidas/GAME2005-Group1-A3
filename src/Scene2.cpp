@@ -1,21 +1,23 @@
-#include "EndScene.h"
-#include <algorithm>
+#include "Scene2.h"
 #include "Game.h"
-#include "glm/gtx/string_cast.hpp"
-#include "EventManager.h"
-#include "Renderer.h"
+#include <ctime>
+#include "GLM/gtx/string_cast.hpp"
+#include <algorithm>
+#include <iomanip>
 #include <IMGUI\imgui.h>
 #include <IMGUI_SDL\imgui_sdl.h>
+#include "Renderer.h"
 #include "Util.h"
-EndScene::EndScene()
+Scene2::Scene2()
 {
-	EndScene::start();
+	Scene2::start();
 }
 
-EndScene::~EndScene()
-= default;
+Scene2::~Scene2()
+{
+}
 
-void EndScene::draw()
+void Scene2::draw()
 {
 	/*m_pStartLabel->draw();
 	m_pInstructionsLabel->draw();*/
@@ -24,11 +26,11 @@ void EndScene::draw()
 	//m_pPlanet->draw();
 	//m_pMine->draw();
 
-	//for (auto ball : m_pBalls)
-	//{
-	m_pBall->draw();
-//	}
-//
+	for (auto ball : m_pBalls)
+	{
+		ball->draw();
+	}
+
 	// ImGui Rendering section - DO NOT MOVE OR DELETE
 	if (m_displayUI)
 	{
@@ -48,17 +50,17 @@ void EndScene::draw()
 	}
 }
 
-void EndScene::update()
+void Scene2::update()
 {
 	m_move();
 	m_pShip->update();
 	//m_pPlanet->update();
 	//m_pMine->update();
-	//for (auto ball : m_pBalls)
-	//{
-	m_pBall->update();
-		CollisionManager::circleAABBCheck(m_pBall, m_pShip);
-	//}
+	for (auto ball : m_pBalls)
+	{
+		ball->update();
+		CollisionManager::circleAABBCheck(ball, m_pShip);
+	}
 
 	//CollisionManager::squaredRadiusCheck(m_pShip, m_pPlanet);
 	//CollisionManager::squaredRadiusCheck(m_pShip, m_pMine);
@@ -76,7 +78,7 @@ void EndScene::update()
 	}
 }
 
-void EndScene::clean()
+void Scene2::clean()
 {
 	/*delete m_pStartLabel;
 	delete m_pInstructionsLabel;*/
@@ -86,7 +88,7 @@ void EndScene::clean()
 	removeAllChildren();
 }
 
-void EndScene::handleEvents()
+void Scene2::handleEvents()
 {
 	ImGuiIO& io = ImGui::GetIO();
 	int wheel = 0;
@@ -189,7 +191,7 @@ void EndScene::handleEvents()
 	m_ImGuiSetStyle();
 }
 
-void EndScene::start()
+void Scene2::start()
 {
 	SoundManager::Instance().load(
 		"../Assets/audio/yay.ogg",
@@ -199,26 +201,27 @@ void EndScene::start()
 		"thunder", SOUND_SFX);
 
 	m_position = glm::vec2(400.0f, 300.0f);
-	m_pShip = new Brick();
+	m_pShip = new Ship();
 	m_pShip->getTransform()->position = m_position;
 	addChild(m_pShip);
 
-	m_velocity = glm::vec2(0.0, 0.0); //glm::vec2(1.0f, m_velocity.y);
+	m_velocity = glm::vec2(1.0f, m_velocity.y);
 	m_speedFactor = glm::vec2(4.0f, 4.0f);
 
+	
 
-
-
+	
 
 	// Instantiate a vector of Bullets
-	//for (int i = 0; i < 5; ++i)
-	//{
-		m_pBall = new Ball();
-		m_pBall->reset();
-		//m_pBalls.push_back(ball);
-	//}
+	for (int i = 0; i < 5; ++i)
+	{
+		auto ball = new Ball();
+		ball->reset();
+		m_pBalls.push_back(ball);
+	}
 }
-void EndScene::m_ImGuiKeyMap()
+
+void Scene2::m_ImGuiKeyMap()
 {
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -247,7 +250,7 @@ void EndScene::m_ImGuiKeyMap()
 	io.KeyMap[ImGuiKey_Z] = SDL_SCANCODE_Z;
 }
 
-void EndScene::m_ImGuiSetStyle()
+void Scene2::m_ImGuiSetStyle()
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -292,7 +295,7 @@ void EndScene::m_ImGuiSetStyle()
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 }
 
-void EndScene::m_updateUI()
+void Scene2::m_updateUI()
 {
 	// Prepare Window Frame
 	ImGui::NewFrame();
@@ -545,10 +548,11 @@ void EndScene::m_updateUI()
 	ImGui::End();
 }
 
-void EndScene::m_move()
+void Scene2::m_move()
 {
-
-
+	
+	
 	m_position = m_pShip->getTransform()->position + m_velocity * m_speedFactor; // +m_acceleration;
 	m_pShip->getTransform()->position = m_position;
 }
+

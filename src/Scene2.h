@@ -1,21 +1,22 @@
 #pragma once
-#ifndef __END_SCENE__
-#define __END_SCENE__
-
+#ifndef __SCENE_2__
+#define __SCENE_2__
 #include "Scene.h"
 #include "Label.h"
-#include "Button.h"
+#include "ship.h"
+//#include "MoveState.h"
+//#include "Planet.h"
+//#include "Mine.h"
 #include "CollisionManager.h"
 #include "SoundManager.h"
 #include "Target.h"
 #include "ball.h"
-#include "Brick.h"
 
-class EndScene final : public Scene
+class Scene2 final : public Scene
 {
 public:
-	EndScene();
-	~EndScene();
+	Scene2();
+	~Scene2();
 
 	// Inherited via Scene
 	virtual void draw() override;
@@ -29,15 +30,15 @@ private:
 	Label* m_pInstructionsLabel;*/
 
 	// Ship Stuff
-	Brick* m_pShip;
+	Ship* m_pShip;
 //	MoveState m_moveState;
 	glm::vec2 m_speedFactor;
 
 	
 	// Bullet Stuff
 	Ball* m_pBall;
-	
-	//std::vector<Ball*> m_pBalls;
+
+	std::vector<Ball*> m_pBalls;
 
 	glm::vec2 m_mousePosition;
 
@@ -62,4 +63,4 @@ private:
 	void m_move();
 };
 
-#endif /* defined (__END_SCENE__) */
+#endif /* defined (__START_SCENE__) */

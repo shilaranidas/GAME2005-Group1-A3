@@ -1,4 +1,4 @@
-﻿#include "PlayScene.h"
+﻿#include "PlayScene2.h"
 #include "Game.h"
 #include "EventManager.h"
 #include <iostream>
@@ -11,16 +11,16 @@
 #include "Util.h"
 //#include <string>
 
-PlayScene::PlayScene()
+PlayScene2::PlayScene2()
 {
-	PlayScene::start();
+	PlayScene2::start();
 	
 }
 
-PlayScene::~PlayScene()
+PlayScene2::~PlayScene2()
 = default;
 
-void PlayScene::draw()
+void PlayScene2::draw()
 {
 	TextureManager::Instance()->draw("bg", Config::SCREEN_WIDTH/2, Config::SCREEN_HEIGHT/2, 0, 255, true);
 	//bullet->draw();
@@ -38,7 +38,7 @@ void PlayScene::draw()
 
 }
 
-void PlayScene::update()
+void PlayScene2::update()
 {
 	updateDisplayList();
 	//Util::DrawIntersectRect(bullet->getTransform()->position, bullet->getWidth(), bullet->getHeight(), m_pPlayer->getTransform()->position, m_pPlayer->getWidth(), m_pPlayer->getHeight());
@@ -93,12 +93,12 @@ void PlayScene::update()
 	}
 }
 
-void PlayScene::clean()
+void PlayScene2::clean()
 {
 	removeAllChildren();
 }
 
-void PlayScene::handleEvents()
+void PlayScene2::handleEvents()
 {
 	EventManager::Instance().update();
 
@@ -191,7 +191,7 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
 }
-void PlayScene::reset() {
+void PlayScene2::reset() {
 	
 	//m_pStormtrooper->getTransform()->position = glm::vec2(585.0f, fl);
 	//m_pLoot->m_gravity = 9.8f;
@@ -212,7 +212,7 @@ void PlayScene::reset() {
 	//m_pLoot->isGravityEnabled = false;
 	
 }
-void PlayScene::start()
+void PlayScene2::start()
 {
 	//load background from texture.
 	TextureManager::Instance()->load("../Assets/textures/bg.png", "bg");
@@ -296,7 +296,7 @@ void PlayScene::start()
 	reset();
 
 }
-void PlayScene::StartSimulation() {
+void PlayScene2::StartSimulation() {
 	m_pPlayer->m_PPM = m_PPM;
 	m_pPool = new BulletPool(m_noOfBullet);
 	//add each one to scene
@@ -308,7 +308,7 @@ void PlayScene::StartSimulation() {
 	}
 	bulletSpawnTimerStart = SDL_GetTicks();
 }
-void PlayScene::changeLabel() {
+void PlayScene2::changeLabel() {
 	std::string text;// = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
 	//m_pVel->setText(text);
 	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;//Mass: 12.8Kg
@@ -325,7 +325,7 @@ void PlayScene::changeLabel() {
 }
 
 
-void PlayScene::GUI_Function() 
+void PlayScene2::GUI_Function() 
 {
 	// Always open with a NewFrame
 	ImGui::NewFrame();
@@ -375,7 +375,7 @@ void PlayScene::GUI_Function()
 	ImGuiSDL::Render(ImGui::GetDrawData());
 	ImGui::StyleColorsDark();
 }
-void PlayScene::SpawnBullet() {
+void PlayScene2::SpawnBullet() {
 	Bullet* bullet = m_pPool->Spawn();
 	
 	if (bullet)

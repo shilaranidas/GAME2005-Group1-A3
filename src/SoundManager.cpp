@@ -100,7 +100,9 @@ void SoundManager::playSound(const std::string& id, const int loop , const int c
 	if (Mix_PlayChannel(channel, m_sfxs[id], loop) == -1)
 	{
 		std::cout << "Unable to play SFX: ERROR - " << Mix_GetError() << std::endl;
-	}	
+	}
+	else
+		std::cout << "Play sound"  << std::endl;
 }
 
 void SoundManager::setMusicVolume(const int vol) const
