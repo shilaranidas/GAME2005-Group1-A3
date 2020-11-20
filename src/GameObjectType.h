@@ -6,6 +6,7 @@ enum GameObjectType {
 	SHIP,
 	TARGET,
 	BULLET,
+	BRICK,
 	BALL,
 	PLAYER,
 	PLANE,

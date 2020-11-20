@@ -8,9 +8,9 @@
 
 Brick::Brick() :m_maxSpeed(5.0f), m_currentDirection(glm::vec2(0.0f, -1.0f))
 {
-	TextureManager::Instance()->load("../Assets/textures/shipM.png", "ship");
+	TextureManager::Instance()->load("../Assets/textures/brick.png", "brick");
 
-	auto size = TextureManager::Instance()->getTextureSize("ship");
+	auto size = TextureManager::Instance()->getTextureSize("brick");
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -18,7 +18,7 @@ Brick::Brick() :m_maxSpeed(5.0f), m_currentDirection(glm::vec2(0.0f, -1.0f))
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
-	setType(SHIP);
+	setType(BRICK);
 	setCollisionShape(RECTANGLE);
 
 }
@@ -34,7 +34,7 @@ void Brick::draw()
 	const auto y = getTransform()->position.y;
 
 	// draw the ship
-	TextureManager::Instance()->draw("ship", x, y, 0, 255, true);
+	TextureManager::Instance()->draw("brick", x, y, 0, 255, true);
 }
 float Brick::getMaxSpeed() const
 {

@@ -30,7 +30,7 @@ private:
 	Label* m_pInstructionsLabel;*/
 
 	// Ship Stuff
-	Brick* m_pShip;
+	Brick* m_pBrick;
 //	MoveState m_moveState;
 	glm::vec2 m_speedFactor;
 	
