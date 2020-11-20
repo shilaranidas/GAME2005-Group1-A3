@@ -20,7 +20,7 @@ void EndScene::draw()
 	/*m_pStartLabel->draw();
 	m_pInstructionsLabel->draw();*/
 
-	m_pShip->draw();
+	//m_pShip->draw();
 	//m_pPlanet->draw();
 	//m_pMine->draw();
 
@@ -37,7 +37,7 @@ void EndScene::draw()
 		SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 
 		// debug collider shapes
-		Util::DrawRect(m_pShip->getTransform()->position - glm::vec2(m_pShip->getWidth() * 0.5f, m_pShip->getHeight() * 0.5f), m_pShip->getWidth(), m_pShip->getHeight());
+		//Util::DrawRect(m_pShip->getTransform()->position - glm::vec2(m_pShip->getWidth() * 0.5f, m_pShip->getHeight() * 0.5f), m_pShip->getWidth(), m_pShip->getHeight());
 		//Util::DrawRect(m_pPlanet->getPosition() - glm::vec2(m_pPlanet->getWidth() * 0.5f, m_pPlanet->getHeight() *0.5f), m_pPlanet->getWidth(), m_pPlanet->getHeight());
 		//Util::DrawRect(m_pMine->getPosition() - glm::vec2(m_pMine->getWidth() * 0.5f, m_pMine->getHeight() *0.5f), m_pMine->getWidth(), m_pMine->getHeight());
 
@@ -57,7 +57,7 @@ void EndScene::update()
 	//for (auto ball : m_pBalls)
 	//{
 	m_pBall->update();
-		CollisionManager::circleAABBCheck(m_pBall, m_pShip);
+	//	CollisionManager::circleAABBCheck(m_pBall, m_pShip);
 	//}
 
 	//CollisionManager::squaredRadiusCheck(m_pShip, m_pPlanet);
