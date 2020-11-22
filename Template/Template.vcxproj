@@ -181,6 +181,7 @@
     <ClCompile Include="..\src\Plane.cpp" />
     <ClCompile Include="..\src\Player.cpp" />
     <ClCompile Include="..\src\PlayScene.cpp" />
+    <ClCompile Include="..\src\PolygonShape.cpp" />
     <ClCompile Include="..\src\Renderer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
     <ClCompile Include="..\src\Scene2.cpp" />
