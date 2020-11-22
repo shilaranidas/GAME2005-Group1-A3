@@ -369,9 +369,9 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 				std::cout << "Collision with Planet!" << std::endl;
 				SoundManager::Instance().playSound("yay", 0);
 				break;
-			case SHIP:
+			case BRICK:
 				{
-					SoundManager::Instance().playSound("thunder", 0);
+					SoundManager::Instance().playSound("yay", 0);
 					auto velocityX = object1->getRigidBody()->velocity.x;
 					auto velocityY = object1->getRigidBody()->velocity.y;
 
