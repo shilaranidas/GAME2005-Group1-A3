@@ -45,7 +45,11 @@ void EndScene::draw()
 		Util::DrawLine(glm::vec2(0, Config::SCREEN_HEIGHT-1), glm::vec2(Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT-1));
 		Util::DrawLine(glm::vec2(Config::SCREEN_WIDTH-1, 0), glm::vec2(Config::SCREEN_WIDTH-1, Config::SCREEN_HEIGHT));*/
 		if (m_pBall != NULL)
+		{
 			Util::DrawRect(m_pBall->getTransform()->position - glm::vec2(m_pBall->getWidth() * 0.5f, m_pBall->getHeight() * 0.5f), m_pBall->getWidth(), m_pBall->getHeight());
+			Util::DrawLine(m_pBall->getTransform()->position, m_pBrick->getTransform()->position);
+		}
+
 		if (m_pBrick != NULL)
 			Util::DrawRect(m_pBrick->getTransform()->position - glm::vec2(m_pBrick->getWidth() * 0.5f, m_pBrick->getHeight() * 0.5f), m_pBrick->getWidth(), m_pBrick->getHeight());
 		//Util::DrawRect(m_pPlanet->getPosition() - glm::vec2(m_pPlanet->getWidth() * 0.5f, m_pPlanet->getHeight() *0.5f), m_pPlanet->getWidth(), m_pPlanet->getHeight());

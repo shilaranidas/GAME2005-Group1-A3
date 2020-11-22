@@ -98,7 +98,7 @@ void Ball::m_checkBounds()
 //}
 void Ball::reset()
 {
-	int d4 = ceil(Util::RandomRange(0.0, 4.0));
+	int d4 = 2;//ceil(Util::RandomRange(0.0, 4.0));
 
 	switch (d4)
 	{
