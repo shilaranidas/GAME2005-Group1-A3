@@ -67,7 +67,7 @@ private:
 	glm::vec2 m_acceleration = glm::vec2(0.0f, 0.0f);
 
 	// Physics functions
-	void m_move();
+	//void m_move();
 };
 
 #endif /* defined (__END_SCENE__) */

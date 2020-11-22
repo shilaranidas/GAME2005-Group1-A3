@@ -5,8 +5,9 @@
 #include "Util.h"
 #include "CircleCollider.h"
 #include <algorithm>
+#include "EventManager.h"
 
-Brick::Brick() :m_maxSpeed(5.0f), m_currentDirection(glm::vec2(0.0f, -1.0f))
+Brick::Brick() //:m_maxSpeed(5.0f), m_currentDirection(glm::vec2(0.0f, -1.0f))
 {
 	TextureManager::Instance()->load("../Assets/textures/brick.png", "brick");
 
@@ -71,9 +72,14 @@ void Brick::clean()
 
 void Brick::move()
 {
-	const float deltaTime = 1.0f / 60.f;
+	if (isActive)
+	{
+		glm::vec2 mouseVector = EventManager::Instance().getMousePosition();
+		getTransform()->position = glm::vec2(mouseVector.x, mouseVector.y);
+	}
+	/*const float deltaTime = 1.0f / 60.f;
 	getTransform()->position += getRigidBody()->velocity * deltaTime * m_PPM;
-	getRigidBody()->velocity *= 0.0f;
+	getRigidBody()->velocity *= 0.0f;*/
 }
 
 
@@ -87,24 +93,24 @@ void Brick::move()
 void Brick::m_checkBounds()
 {
 
-	if (getTransform()->position.x > Config::SCREEN_WIDTH)
+	if (getTransform()->position.x > Config::SCREEN_WIDTH - getWidth() * 0.5f)
 	{
-		getTransform()->position = glm::vec2(0.0f, getTransform()->position.y);
+		getTransform()->position = glm::vec2(Config::SCREEN_WIDTH - getWidth() * 0.5f, getTransform()->position.y);
 	}
 
-	if (getTransform()->position.x < 0)
+	if (getTransform()->position.x < getWidth() * 0.5f)
 	{
-		getTransform()->position = glm::vec2(800.0f, getTransform()->position.y);
+		getTransform()->position = glm::vec2(getWidth() * 0.5f, getTransform()->position.y);
 	}
 
-	if (getTransform()->position.y > Config::SCREEN_HEIGHT)
+	if (getTransform()->position.y > Config::SCREEN_HEIGHT - getHeight() * 0.5f)
 	{
-		getTransform()->position = glm::vec2(getTransform()->position.x, 0.0f);
+		getTransform()->position = glm::vec2(getTransform()->position.x, Config::SCREEN_HEIGHT - getHeight() * 0.5f);
 	}
 
-	if (getTransform()->position.y < 0)
+	if (getTransform()->position.y < getHeight() * 0.5f)
 	{
-		getTransform()->position = glm::vec2(getTransform()->position.x, 600.0f);
+		getTransform()->position = glm::vec2(getTransform()->position.x, getHeight() * 0.5f);
 	}
 
 }

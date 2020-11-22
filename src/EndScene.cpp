@@ -46,6 +46,8 @@ void EndScene::draw()
 		Util::DrawLine(glm::vec2(Config::SCREEN_WIDTH-1, 0), glm::vec2(Config::SCREEN_WIDTH-1, Config::SCREEN_HEIGHT));*/
 		if (m_pBall != NULL)
 			Util::DrawRect(m_pBall->getTransform()->position - glm::vec2(m_pBall->getWidth() * 0.5f, m_pBall->getHeight() * 0.5f), m_pBall->getWidth(), m_pBall->getHeight());
+		if (m_pBrick != NULL)
+			Util::DrawRect(m_pBrick->getTransform()->position - glm::vec2(m_pBrick->getWidth() * 0.5f, m_pBrick->getHeight() * 0.5f), m_pBrick->getWidth(), m_pBrick->getHeight());
 		//Util::DrawRect(m_pPlanet->getPosition() - glm::vec2(m_pPlanet->getWidth() * 0.5f, m_pPlanet->getHeight() *0.5f), m_pPlanet->getWidth(), m_pPlanet->getHeight());
 		//Util::DrawRect(m_pMine->getPosition() - glm::vec2(m_pMine->getWidth() * 0.5f, m_pMine->getHeight() *0.5f), m_pMine->getWidth(), m_pMine->getHeight());
 
@@ -59,7 +61,7 @@ void EndScene::draw()
 void EndScene::update()
 {
 	updateDisplayList();
-	m_move();
+	//m_move();
 	m_pBrick->update();
 	//m_pPlanet->update();
 	//m_pMine->update();
@@ -67,6 +69,10 @@ void EndScene::update()
 	//{
 	if (m_pBall != NULL)
 		m_pBall->update();
+	if (m_pBrick->isActive)
+	{
+		CollisionManager::circleAABBCheck(m_pBall, m_pBrick);
+	}
 	/*
 	Util::DrawLine(glm::vec2(0, 0), glm::vec2(0, Config::SCREEN_HEIGHT));
 		Util::DrawLine(glm::vec2(0, 0), glm::vec2(Config::SCREEN_WIDTH, 0));
@@ -169,29 +175,7 @@ void EndScene::handleEvents()
 	{
 		TheGame::Instance()->quit();
 	}
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
-	{
-		//m_pPlayer->getRigidBody()->velocity = glm::vec2(-m_pPlayer->SPEED, 0.0f);
-		m_velocity = glm::vec2(-1.0f, m_velocity.y);
-	}
-	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
-	{
-		//m_pPlayer->getRigidBody()->velocity = glm::vec2(m_pPlayer->SPEED, 0.0f);
-		m_velocity = glm::vec2(1.0f, m_velocity.y);
-	}
-	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W)) {
-		//m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, -m_pPlayer->SPEED);
-		m_velocity = glm::vec2(m_velocity.x, -1.0f);
-	}
-	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S)) {
-		//m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, m_pPlayer->SPEED);
-		m_velocity = glm::vec2(m_velocity.x, 1.0f);
-	}
-	else {
-		//m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-		//m_velocity = glm::vec2(0.0f, 0.0f);
-		m_velocity = glm::vec2(1.0f, m_velocity.y);
-	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3))
 	{
 		TheGame::Instance()->changeSceneState(START_SCENE);
@@ -216,7 +200,7 @@ void EndScene::start()
 		"../Assets/audio/thunder.ogg",
 		"thunder", SOUND_SFX);
 
-	m_position = glm::vec2(400.0f, 300.0f);
+	m_position = glm::vec2(400.0f, 500.0f);
 	m_pBrick = new Brick();
 	m_pBrick->getTransform()->position = m_position;
 	addChild(m_pBrick);
@@ -283,6 +267,7 @@ void EndScene::reset()
 void EndScene::StartSimulation() {
 	m_pBall = new Ball();
 	m_pBall->reset();
+	m_pBrick->isActive = true;
 }
 
 
@@ -322,10 +307,10 @@ void EndScene::m_updateUI()
 	ImGui::StyleColorsDark();
 }
 
-void EndScene::m_move()
-{
-
-
-	m_position = m_pBrick->getTransform()->position + m_velocity * m_speedFactor; // +m_acceleration;
-	m_pBrick->getTransform()->position = m_position;
-}
+//void EndScene::m_move()
+//{
+//
+//
+//	m_position = m_pBrick->getTransform()->position + m_velocity * m_speedFactor; // +m_acceleration;
+//	m_pBrick->getTransform()->position = m_position;
+//}
