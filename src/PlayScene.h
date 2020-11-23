@@ -31,7 +31,8 @@ public:
 	void reset();
 	
 private:
-	const float bulletSpawnTimerDuration = 500.0f;
+	float bulletSpawnTimerDuration = 500.0f;//in milliseconds
+	float bulletSpawnTimerinSec = 0.5f;
 	float bulletSpawnTimerStart;
 	// IMGUI Function
 	void GUI_Function() ;
@@ -39,14 +40,11 @@ private:
 	
 	
 	glm::vec2 m_mousePosition;
-	
-	//Plane* m_pPlaneSprite;
+
 	BulletPool* m_pPool;
 	
 	Ship* m_pPlayer;
-	//Bullet* bullet;
-	//Ship* m_pStormtrooper;
-	//bool m_playerFacingRight;
+	bool running = false;
 
 	// UI Items
 	Button* m_pBackButton;
@@ -56,43 +54,19 @@ private:
 	
 	
 	Label* m_pInstructionsLabel;
-	//mass, position, velocity, acceleration
-	//Label* m_pMass;
+
 	Label* m_pNoOfBullet;
 	
 	Label* m_pVel;
-	Label* m_pAcce;
+	Label* m_pSpawnTimer;
 
-	Label* m_pForce;
-
-	
-	//int fl = 510.0f;
-
-
-	// Physics Variables
-	
 
 	float m_PPM = 1.0f; // pixels per meter - scale
-	
 
 
 	int m_noOfBullet = 10;
-	float m_Force = 0.0f;
-	
-	
-	
 
 
-	
-
-	
-
-
-
-
-
-
-//	float m_totalTime=0.0f;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

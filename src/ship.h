@@ -21,7 +21,7 @@ public:
 	void move();
 	float getMaxSpeed() const;
 	void setMaxSpeed(float newSpeed);
-	const float SPEED = 100.0f;
+	float SPEED = 100.0f;
 	float m_PPM = 1.0f;
 	glm::vec2 getCurrentDirection() const;
 	void setCurrentDirection(glm::vec2 newDirection);

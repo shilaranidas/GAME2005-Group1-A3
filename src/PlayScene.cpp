@@ -45,51 +45,54 @@ void PlayScene::update()
 	//CollisionManager::AABBCheck(bullet, m_pPlayer);
 	if (m_pPool != NULL)
 	{
-		
-		if (SDL_GetTicks() - bulletSpawnTimerStart >= bulletSpawnTimerDuration) {
-			SpawnBullet();
-		}
-		//std::vector<bool>::iterator myBoolIter = m_pPool->activeColliding.begin();
-		int i = 0;
-		for (std::vector<Bullet*>::iterator myiter = m_pPool->active.begin(); myiter != m_pPool->active.end(); myiter++)
-		//for (int i = 0; i < m_pPool->active.size(); i++)
-		
+		if (running)
 		{
-			Bullet* currentbullet = *myiter;
-			const float p1Width = currentbullet->getWidth();
-			const float p1Height = currentbullet->getHeight();
-			const float p2Width = m_pPlayer->getWidth();
-			const float p2Height = m_pPlayer->getHeight();
-			//move the position from center to top left corner
-			const auto p1 = currentbullet->getTransform()->position - glm::vec2(p1Width * 0.5f, p1Height * 0.5f);
-			const auto p2 = m_pPlayer->getTransform()->position - glm::vec2(p2Width * 0.5f, p2Height * 0.5f);
-			if (
-				p1.x < p2.x + p2Width &&
-				p1.x + p1Width > p2.x &&
-				p1.y < p2.y + p2Height &&
-				p1.y + p1Height > p2.y
-				)
+			if (SDL_GetTicks() - bulletSpawnTimerStart >= bulletSpawnTimerDuration) {
+				SpawnBullet();
+			}
+			//std::vector<bool>::iterator myBoolIter = m_pPool->activeColliding.begin();
+			int i = 0;
+			for (std::vector<Bullet*>::iterator myiter = m_pPool->active.begin(); myiter != m_pPool->active.end(); myiter++)
+				//for (int i = 0; i < m_pPool->active.size(); i++)
+
 			{
-				//collistion detected
-				if (!m_pPool->activeColliding[i])
+				Bullet* currentbullet = *myiter;
+				const float p1Width = currentbullet->getWidth();
+				const float p1Height = currentbullet->getHeight();
+				const float p2Width = m_pPlayer->getWidth();
+				const float p2Height = m_pPlayer->getHeight();
+				//move the position from center to top left corner
+				const auto p1 = currentbullet->getTransform()->position - glm::vec2(p1Width * 0.5f, p1Height * 0.5f);
+				const auto p2 = m_pPlayer->getTransform()->position - glm::vec2(p2Width * 0.5f, p2Height * 0.5f);
+				if (
+					p1.x < p2.x + p2Width &&
+					p1.x + p1Width > p2.x &&
+					p1.y < p2.y + p2Height &&
+					p1.y + p1Height > p2.y
+					)
 				{
-					m_pPool->activeColliding[i] = true;
-					SoundManager::Instance().playSound("yay", 0);
+					//collistion detected
+					if (!m_pPool->activeColliding[i])
+					{
+						m_pPool->activeColliding[i] = true;
+						SoundManager::Instance().playSound("yay", 0);
+					}
 				}
+				else
+					m_pPool->activeColliding[i] = false;
+
+				//bool collision=CollisionManager::AABBCheck1(currentbullet, m_pPlayer, m_pPool->activeColliding,i);
+				//m_pPool->activeColliding[i] = collision;
+
+				if (currentbullet->getTransform()->position.y >= 650)
+				{
+					m_pPool->Despawn(currentbullet);
+					break;
+				}
+				i++;
 			}
-			else
-				m_pPool->activeColliding[i] = false;
-			
-			//bool collision=CollisionManager::AABBCheck1(currentbullet, m_pPlayer, m_pPool->activeColliding,i);
-			//m_pPool->activeColliding[i] = collision;
-			
-			if (currentbullet->getTransform()->position.y >= 650)
-			{
-				m_pPool->Despawn(currentbullet);
-				break;
-			}
-			i++;
 		}
+		
 	}
 }
 
@@ -193,24 +196,17 @@ void PlayScene::handleEvents()
 }
 void PlayScene::reset() {
 	
-	//m_pStormtrooper->getTransform()->position = glm::vec2(585.0f, fl);
-	//m_pLoot->m_gravity = 9.8f;
-	//m_pPool = NULL;
-	m_PPM = 1.0f;
-	/*if(m_pPool!=NULL)
-		m_pPool->ResetAll();*/
-	//m_pLoot->m_mass = 12.5f;
-	//m_pLoot->m_PPM = 1.0f;
-	//m_pLoot->m_Atime = 0.016667f;
-	//m_pLoot->m_angle = 0.0f;
-	//m_pLoot->m_velocity = 0.0f;
-	//m_pLoot->m_velocityX = 0.0f;
-	//m_pLoot->m_velocityY = 0.0f;
-	//m_pLoot->m_acceleration = glm::vec2(0.0f, 0.0f);
-	//m_pLoot->throwSpeed = glm::vec2(0.0f, 0.0f);
-	//m_pLoot->buttonPressed = false;
-	//m_pLoot->isGravityEnabled = false;
 	
+	m_PPM = 1.0f;
+	running = false;
+	m_pPlayer->SPEED = 100.0f;
+	m_pPlayer->getTransform()->position = glm::vec2(585.0f, 510.0f);
+	m_pPlayer->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	m_pPlayer->getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
+	bulletSpawnTimerinSec = 0.5f;
+	bulletSpawnTimerDuration = bulletSpawnTimerinSec * 1000;
+	m_noOfBullet = 10;
+	m_pPool->ResetAll();
 }
 void PlayScene::start()
 {
@@ -226,7 +222,15 @@ void PlayScene::start()
 	m_pPlayer = new Ship();
 	addChild(m_pPlayer);
 	
-	
+	m_pPlayer->m_PPM = m_PPM;
+	m_pPool = new BulletPool(m_noOfBullet);
+	//add each one to scene
+	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
+	{
+		Bullet* bullet = *myiter;
+
+		addChild(bullet);
+	}
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/back.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(60.0f, 560.0f);
@@ -279,48 +283,31 @@ void PlayScene::start()
 	m_pNoOfBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 10.0f);
 	addChild(m_pNoOfBullet);
 	
-	m_pVel = new Label("Velocity: 95m/s", "Consolas", 20, white);
+	m_pVel = new Label("Speed: 100m/s", "Consolas", 20, white);
 	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
 	addChild(m_pVel);
 	
 	
 	
-	m_pForce = new Label("Force: 50N", "Consolas", 20, white);
-	m_pForce->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.85f,110.0f);
-	addChild(m_pForce);
 	
-	m_pAcce = new Label("Acceleration: 3m/s^2", "Consolas", 20, white);
-	m_pAcce->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 150.0f);
-	addChild(m_pAcce);
+	m_pSpawnTimer = new Label("Bullet Spawn Timer: 0.5 s", "Consolas", 20, white);
+	m_pSpawnTimer->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 50.0f);
+	addChild(m_pSpawnTimer);
 	reset();
 
 }
 void PlayScene::StartSimulation() {
-	m_pPlayer->m_PPM = m_PPM;
-	m_pPool = new BulletPool(m_noOfBullet);
-	//add each one to scene
-	for (std::vector<Bullet*>::iterator myiter = m_pPool->all.begin(); myiter != m_pPool->all.end(); myiter++)
-	{
-		Bullet* bullet = *myiter;
-
-		addChild(bullet);
-	}
+	running = true;
 	bulletSpawnTimerStart = SDL_GetTicks();
 }
 void PlayScene::changeLabel() {
-	std::string text;// = "Velocity: " + std::to_string(m_pLoot->m_velocity) + " m/s";
-	//m_pVel->setText(text);
-	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;//Mass: 12.8Kg
+	std::string text = "Speed: " + std::to_string(m_pPlayer->SPEED) + " m/s";
+	m_pVel->setText(text);
+	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;
 	m_pNoOfBullet->setText(text);
-	;
-	//text = "distance: " + std::to_string(m_pStormtrooper->getTransform()->position.x- m_pBall->getTransform()->position.x) + " m";//Angle: 45degree
-
-	//text = "Force: " + std::to_string(m_pLoot->m_pF) + " N";
-	//m_pForce->setText(text);
-
-	//std::cout << "labl" <<  m_pLoot->m_accelerationVal << std::endl;
-	//text = "Acceleration: " + std::to_string(m_pLoot->m_accelerationVal);//Angle: 45degree
-	//m_pAcce->setText(text);
+	
+	text = "Bullet Spawn Timer: " + std::to_string(bulletSpawnTimerinSec)+" s";
+	m_pSpawnTimer->setText(text);
 }
 
 
@@ -342,30 +329,18 @@ void PlayScene::GUI_Function()
 		StartSimulation();
 		//m_pLoot->doThrow();
 	}
-	/*ImGui::SameLine();
+	ImGui::SameLine();
 	if (ImGui::Button("Reset All"))
 	{
 		reset();
-	}*/
+	}
 	ImGui::Separator();
 	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 0.1f, 30.0f, "%.1f"));
-	
+	if (ImGui::SliderFloat("bullet Spawn Timer Duration (s)", &bulletSpawnTimerinSec, 0.001f, 5.0f, "%.1f"))
+		bulletSpawnTimerDuration = bulletSpawnTimerinSec * 1000;
 	if (ImGui::SliderInt("No of Bullet", &m_noOfBullet, 0, 100));
-	
+	if (ImGui::SliderFloat("Speed (m/s)", &m_pPlayer->SPEED, 0.1f, 100/ m_PPM, "%.1f"));
 	changeLabel();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	ImGui::End();
 

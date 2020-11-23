@@ -73,7 +73,7 @@ void Ship::move()
 {
 	const float deltaTime = 1.0f / 60.f;
 	getTransform()->position += getRigidBody()->velocity* deltaTime* m_PPM;
-	getRigidBody()->velocity *= 0.9f;
+	//getRigidBody()->velocity *= 0.9f;
 }
 
 

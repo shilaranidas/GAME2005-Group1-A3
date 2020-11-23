@@ -58,16 +58,14 @@ void BulletPool::Despawn(Bullet* bullet)
 
 void BulletPool::ResetAll()
 {
-	std::vector<bool>::iterator myBoolIter = activeColliding.begin();
+	
 	for (std::vector<Bullet*>::iterator myIter = active.begin(); myIter != active.end(); myIter++)
-	{
-		//Despawn(*myIter);
-		//inactive.push_back(*myIter);
+	{		
 		(*myIter)->active = false;
-		inactive.push_back(*myIter);
-		active.erase(myIter);
-		activeColliding.erase(myBoolIter);
-		//myBoolIter++;
+		(*myIter)->getTransform()->position = glm::vec2(0.0f, -(*myIter)->getHeight());
+		inactive.push_back(*myIter);				
 	}
+	active.erase(active.begin(),active.end());
+	activeColliding.erase(activeColliding.begin(),activeColliding.end());
 	
 }
