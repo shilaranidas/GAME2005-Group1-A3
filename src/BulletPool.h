@@ -16,9 +16,7 @@ public:
 	std::vector<Bullet*> all;
 	std::vector<Bullet*> active;
 	std::vector<bool> activeColliding;
-	//bool* activeColliding;
-	//std::list<bool> activeColliding;
-private:
+
 	std::vector<Bullet*> inactive;
 	
 };

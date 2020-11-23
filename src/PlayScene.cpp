@@ -48,7 +48,17 @@ void PlayScene::update()
 		if (running)
 		{
 			if (SDL_GetTicks() - bulletSpawnTimerStart >= bulletSpawnTimerDuration) {
-				SpawnBullet();
+				if(m_pPool->active.size()>m_noOfBullet)
+				{
+					Bullet* bullet = (m_pPool->active.back());	
+					m_pPool->active.pop_back();
+					bullet->active = false;
+					bullet->getTransform()->position.y = -bullet->getHeight();
+					m_pPool->inactive.push_back(bullet);
+					
+				}
+				else if (m_pPool->active.size() < m_noOfBullet)
+					SpawnBullet();
 			}
 			//std::vector<bool>::iterator myBoolIter = m_pPool->activeColliding.begin();
 			int i = 0;
