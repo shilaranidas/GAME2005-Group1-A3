@@ -214,12 +214,12 @@ void EndScene::start()
 
 
 // Back Button
-		m_pBackButton = new Button("../Assets/textures/back.png", "backButton", BACK_BUTTON);
+		m_pBackButton = new Button("../Assets/textures/scene1.png", "backButton", BACK_BUTTON);
 		m_pBackButton->getTransform()->position = glm::vec2(60.0f, 560.0f);
 		m_pBackButton->addEventListener(CLICK, [&]()-> void
 			{
 				m_pBackButton->setActive(false);
-				TheGame::Instance()->changeSceneState(START_SCENE);
+				TheGame::Instance()->changeSceneState(PLAY_SCENE);
 			});
 
 		m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -234,12 +234,12 @@ void EndScene::start()
 		addChild(m_pBackButton);
 
 		// Next Button
-		m_pNextButton = new Button("../Assets/textures/next.png", "nextButton", NEXT_BUTTON);
-		m_pNextButton->getTransform()->position = glm::vec2(740.0f, 560.0f);
+		m_pNextButton = new Button("../Assets/textures/Start.png", "startButton", START_BUTTON);
+		m_pNextButton->getTransform()->position = glm::vec2(700.0f, 560.0f);
 		m_pNextButton->addEventListener(CLICK, [&]()-> void
 			{
 				m_pNextButton->setActive(false);
-				TheGame::Instance()->changeSceneState(END_SCENE);
+				TheGame::Instance()->changeSceneState(START_SCENE);
 			});
 
 		m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
