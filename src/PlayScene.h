@@ -58,8 +58,10 @@ private:
 	Label* m_pNoOfBullet;
 	
 	Label* m_pVel;
+	Label* m_pVelBullet;
 	Label* m_pSpawnTimer;
-
+	Label* m_pGravity;
+	//float m_gravity = 9.8f;
 
 	float m_PPM = 1.0f; // pixels per meter - scale
 

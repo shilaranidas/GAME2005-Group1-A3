@@ -18,6 +18,6 @@ public:
 	std::vector<bool> activeColliding;
 
 	std::vector<Bullet*> inactive;
-	
+	float m_gravity = 9.8f;
 };
 #endif /* defined (__BULLETPOOL__) */

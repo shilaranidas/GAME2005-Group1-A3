@@ -20,6 +20,7 @@ Bullet* BulletPool::Spawn()
 		bullet = inactive.back();
 		bullet->Reset();
 		bullet->active = true;
+		bullet->m_gravity = m_gravity;
 		inactive.pop_back();
 		active.push_back(bullet);
 		activeColliding.push_back(false);

@@ -216,6 +216,7 @@ void PlayScene::reset() {
 	bulletSpawnTimerinSec = 0.5f;
 	bulletSpawnTimerDuration = bulletSpawnTimerinSec * 1000;
 	m_noOfBullet = 10;
+	m_pPool->m_gravity = 9.8f;
 	m_pPool->ResetAll();
 }
 void PlayScene::start()
@@ -293,16 +294,21 @@ void PlayScene::start()
 	m_pNoOfBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 10.0f);
 	addChild(m_pNoOfBullet);
 	
-	m_pVel = new Label("Speed: 100m/s", "Consolas", 20, white);
+	m_pVel = new Label("Speed of player: 100m/s", "Consolas", 20, white);
 	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
 	addChild(m_pVel);
 	
-	
+	m_pVelBullet = new Label("Velocity of 1st Bullet in y: (0,0)", "Consolas", 20, white);
+	m_pVelBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 90.0f);
+	addChild(m_pVelBullet);
 	
 	
 	m_pSpawnTimer = new Label("Bullet Spawn Timer: 0.5 s", "Consolas", 20, white);
-	m_pSpawnTimer->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 50.0f);
+	m_pSpawnTimer->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 50.0f);
 	addChild(m_pSpawnTimer);
+	m_pGravity = new Label("Gravity: 9.8m/s^2", "Consolas", 20, white);
+	m_pGravity->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 70.0f);
+	addChild(m_pGravity);
 	reset();
 
 }
@@ -311,13 +317,19 @@ void PlayScene::StartSimulation() {
 	bulletSpawnTimerStart = SDL_GetTicks();
 }
 void PlayScene::changeLabel() {
-	std::string text = "Speed: " + std::to_string(m_pPlayer->SPEED) + " m/s";
+	std::string text = "Speed of player: " + std::to_string(m_pPlayer->SPEED) + " m/s";
 	m_pVel->setText(text);
+	if(m_pPool)
+		if(m_pPool->active.size()>0)
+			text = "Velocity of 1st Bullet in y: " + std::to_string(m_pPool->active.at(0)->getRigidBody()->velocity.y)+ " m/s^2";
+	m_pVelBullet->setText(text);
 	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;
 	m_pNoOfBullet->setText(text);
 	
 	text = "Bullet Spawn Timer: " + std::to_string(bulletSpawnTimerinSec)+" s";
 	m_pSpawnTimer->setText(text);
+	text = "Gravity: " + std::to_string(m_pPool->m_gravity) + " m/s^2";
+	m_pGravity->setText(text);
 }
 
 
@@ -349,7 +361,8 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderFloat("bullet Spawn Timer Duration (s)", &bulletSpawnTimerinSec, 0.001f, 5.0f, "%.1f"))
 		bulletSpawnTimerDuration = bulletSpawnTimerinSec * 1000;
 	if (ImGui::SliderInt("No of Bullet", &m_noOfBullet, 0, 100));
-	if (ImGui::SliderFloat("Speed (m/s)", &m_pPlayer->SPEED, 0.1f, 100/ m_PPM, "%.1f"));
+	if (ImGui::SliderFloat("Speed of player (m/s)", &m_pPlayer->SPEED, 0.1f, 100/ m_PPM, "%.1f"));
+	if (ImGui::SliderFloat("Gravity (m/s^2)", &m_pPool->m_gravity, 0.1f, 15 , "%.1f"));
 	changeLabel();
 	
 	ImGui::End();
