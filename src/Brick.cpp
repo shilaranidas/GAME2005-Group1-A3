@@ -72,10 +72,13 @@ void Brick::clean()
 
 void Brick::move()
 {
+	const float deltaTime = 1.0f / 60.f;
 	if (isActive)
 	{
 		glm::vec2 mouseVector = EventManager::Instance().getMousePosition();
-		getTransform()->position = glm::vec2(mouseVector.x, mouseVector.y);
+		glm::vec2 displacement = glm::vec2(mouseVector.x- getTransform()->position.x, mouseVector.y- getTransform()->position.y);
+		getRigidBody()->velocity = displacement * deltaTime*5.0f;
+		getTransform()->position += getRigidBody()->velocity*m_PPM;
 	}
 	/*const float deltaTime = 1.0f / 60.f;
 	getTransform()->position += getRigidBody()->velocity * deltaTime * m_PPM;
