@@ -67,10 +67,12 @@ private:
 	glm::vec2 m_acceleration = glm::vec2(0.0f, 0.0f);
 	Label* lblBallMass;
 	Label* lblBrickMass;
+	Label* lblBallVel;
+	Label* lblBrickVel;
 	Label* lblWallFriction;
-	float m_BallMass = 0.0f;
-	float m_BrickMass = 1.0f;
-	float m_WallFriction = 0.9f;
+	//float m_BallMass = 0.0f;
+	//float m_BrickMass = 1.0f;
+	//float m_WallFriction = 0.9f;
 	// Physics functions
 	//void m_move();
 };

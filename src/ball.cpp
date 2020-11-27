@@ -62,9 +62,12 @@ void Ball::update()
 }
 void Ball::m_move()
 {
-	//getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
-	glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity;
-	getTransform()->position=newPosition;
+	if (isActive)
+	{
+		//getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
+		glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity;
+		getTransform()->position = newPosition;
+	}
 }
 void Ball::clean()
 {
@@ -75,20 +78,35 @@ void Ball::m_checkBounds()
 	
 	auto velocityX = getRigidBody()->velocity.x;
 	auto velocityY = getRigidBody()->velocity.y;
-	if ((getTransform()->position.y > Config::SCREEN_HEIGHT - getHeight() * 0.5f) || // bottom 
-		(getTransform()->position.y < getHeight()*0.5f ))  // top
+	if ((getTransform()->position.y > Config::SCREEN_HEIGHT - getHeight() * 0.5f))  // bottom 
 	{
 		SoundManager::Instance().playSound("thunder", 0);
-		getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
-		std::cout << "in y"<<std::endl;
+		getTransform()->position.y = Config::SCREEN_HEIGHT - getHeight() * 0.5f;
+			getRigidBody()->velocity = glm::vec2(velocityX, -velocityY * m_WallFriction);
+			//std::cout << "in y"<<std::endl;
 	}
-	if	((getTransform()->position.x > Config::SCREEN_WIDTH -getWidth() * 0.5) || // right
-		(getTransform()->position.x < getWidth() * 0.5f)) // left
+	else if	((getTransform()->position.y < getHeight()*0.5f ))  // top
 	{
 		SoundManager::Instance().playSound("thunder", 0);
-		getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
+		getTransform()->position.y =  getHeight() * 0.5f;
+		getRigidBody()->velocity = glm::vec2(velocityX, -velocityY*m_WallFriction);
+		//std::cout << "in y"<<std::endl;
+	}
+	else if	((getTransform()->position.x > Config::SCREEN_WIDTH -getWidth() * 0.5))  // right
+	{
+		SoundManager::Instance().playSound("thunder", 0);
+		getTransform()->position.x = Config::SCREEN_WIDTH - getWidth() * 0.5;
+			getRigidBody()->velocity = glm::vec2(-velocityX * m_WallFriction, velocityY);
+			//reset();
+			//std::cout << "in x" << std::endl;
+	}
+	else if	((getTransform()->position.x < getWidth() * 0.5f)) // left
+	{
+		SoundManager::Instance().playSound("thunder", 0);
+		getTransform()->position.x = getWidth() * 0.5f;
+		getRigidBody()->velocity = glm::vec2(-velocityX * m_WallFriction, velocityY);
 		//reset();
-		std::cout << "in x" << std::endl;
+		//std::cout << "in x" << std::endl;
 	}
 }
 //void Ball::Reset()

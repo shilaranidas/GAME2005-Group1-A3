@@ -28,7 +28,7 @@ void EndScene::draw()
 
 	//for (auto ball : m_pBalls)
 	//{
-	if (m_pBall != NULL)
+	//if (m_pBall != NULL)
 		m_pBall->draw();
 //	}
 	drawDisplayList();
@@ -44,13 +44,13 @@ void EndScene::draw()
 		Util::DrawLine(glm::vec2(0, 0), glm::vec2(Config::SCREEN_WIDTH, 0));
 		Util::DrawLine(glm::vec2(0, Config::SCREEN_HEIGHT-1), glm::vec2(Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT-1));
 		Util::DrawLine(glm::vec2(Config::SCREEN_WIDTH-1, 0), glm::vec2(Config::SCREEN_WIDTH-1, Config::SCREEN_HEIGHT));*/
-		if (m_pBall != NULL)
-		{
+		//if (m_pBall != NULL)
+		//{
 			Util::DrawRect(m_pBall->getTransform()->position - glm::vec2(m_pBall->getWidth() * 0.5f, m_pBall->getHeight() * 0.5f), m_pBall->getWidth(), m_pBall->getHeight());
 			Util::DrawLine(m_pBall->getTransform()->position, m_pBrick->getTransform()->position);
-		}
+		//}
 
-		if (m_pBrick != NULL)
+		//if (m_pBrick != NULL)
 			Util::DrawRect(m_pBrick->getTransform()->position - glm::vec2(m_pBrick->getWidth() * 0.5f, m_pBrick->getHeight() * 0.5f), m_pBrick->getWidth(), m_pBrick->getHeight());
 		//Util::DrawRect(m_pPlanet->getPosition() - glm::vec2(m_pPlanet->getWidth() * 0.5f, m_pPlanet->getHeight() *0.5f), m_pPlanet->getWidth(), m_pPlanet->getHeight());
 		//Util::DrawRect(m_pMine->getPosition() - glm::vec2(m_pMine->getWidth() * 0.5f, m_pMine->getHeight() *0.5f), m_pMine->getWidth(), m_pMine->getHeight());
@@ -71,9 +71,9 @@ void EndScene::update()
 	//m_pMine->update();
 	//for (auto ball : m_pBalls)
 	//{
-	if (m_pBall != NULL)
+	if (m_pBall->isActive)
 		m_pBall->update();
-	if (m_pBrick->isActive && m_pBall != NULL)
+	if (m_pBrick->isActive && m_pBall->isActive)
 	{
 		CollisionManager::circleAABBCheck(m_pBall, m_pBrick);
 	}
@@ -208,7 +208,10 @@ void EndScene::start()
 	m_pBrick = new Brick();
 	m_pBrick->getTransform()->position = m_position;
 	addChild(m_pBrick);
-
+	m_pBall = new Ball();
+	m_pBall->isActive = false;
+	m_pBall->getTransform()->position = glm::vec2(300,300);
+	addChild(m_pBall);
 	m_velocity = glm::vec2(0.0, 0.0); //glm::vec2(1.0f, m_velocity.y);
 	m_speedFactor = glm::vec2(4.0f, 4.0f);
 
@@ -271,31 +274,53 @@ void EndScene::start()
 		lblWallFriction = new Label("Wall Friction: 0.9", "Consolas", 20, white);
 		lblWallFriction->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 50.0f);
 		addChild(lblWallFriction);
+		lblBallVel = new Label("Ball Velocity: (0,0) m/s", "Consolas", 20, white);
+		lblBallVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 70.0f);
+		addChild(lblBallVel);
+
+		lblBrickVel = new Label("Brick Velocity: (0,0) m/s", "Consolas", 20, white);
+		lblBrickVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 90.0f);
+		addChild(lblBrickVel);
 }
 
 void EndScene::reset()
 {
-	m_pBall = NULL;
-	m_WallFriction = 0.9f;
-	m_BrickMass = 20.0f;
-	m_BallMass = 0.0f;
+	//m_pBall = NULL;
+
+	m_pBall->m_WallFriction = 0.9f;
+	m_pBrick->m_Mass = 20.0f;
+	m_pBrick->getTransform()->position = glm::vec2(400, 500);
+	m_pBall->m_Mass = 0.0f;
+	m_pBall->getTransform()->position = glm::vec2(300, 300);
+	m_pBall->isActive = false;
+	m_pBrick->isActive = false;
 }
 
 
 void EndScene::StartSimulation() {
-	m_pBall = new Ball();
+	
 	m_pBall->reset();
 	m_pBrick->isActive = true;
+	m_pBall->isActive = true;
 }
 void EndScene::changeLabel() {
-	std::string text = "Ball Mass: " + std::to_string(m_BallMass) + " Kg";
-	lblBallMass->setText(text);
-	
-	text = "Brick Mass: " + std::to_string(m_BrickMass)+" Kg";
+	std::string text = "Brick Mass: " + std::to_string(m_pBrick->m_Mass) + " Kg";
 	lblBrickMass->setText(text);
 
-	text = "Wall Friction: " + std::to_string(m_WallFriction) ;
-	lblWallFriction->setText(text);
+	
+		text = "Ball Mass: " + std::to_string(m_pBall->m_Mass) + " Kg";
+		lblBallMass->setText(text);
+
+		text = "Wall Friction: " + std::to_string(m_pBall->m_WallFriction);
+		lblWallFriction->setText(text);
+	
+		text = "Brick Velocity: " + std::to_string(m_pBrick->getRigidBody()->velocity.x) +","+ std::to_string(m_pBrick->getRigidBody()->velocity.y) + " m/s";
+		lblBrickVel->setText(text);
+
+
+		text = "Ball Velocity: " + std::to_string(m_pBall->getRigidBody()->velocity.x) + "," + std::to_string(m_pBall->getRigidBody()->velocity.y) + " m/s";
+		lblBallVel->setText(text);
+
 	
 }
 
@@ -323,9 +348,9 @@ void EndScene::m_updateUI()
 		reset();
 	}
 	ImGui::Separator();
-	if (ImGui::SliderFloat("Ball Mass (kg)", &m_BallMass, 0.1f, 15, "%.1f"));
-	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_BrickMass, 0.1f, 50, "%.1f"));
-	if (ImGui::SliderFloat("Wall Friction", &m_WallFriction, 0.1f, 1, "%.1f"));
+	if (ImGui::SliderFloat("Ball Mass (kg)", &m_pBall->m_Mass, 0.1f, 15, "%.1f"));
+	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_pBrick->m_Mass, 0.1f, 50, "%.1f"));
+	if (ImGui::SliderFloat("Wall Friction", &m_pBall->m_WallFriction, 0.1f, 1, "%.1f"));
 
 	changeLabel();
 	
