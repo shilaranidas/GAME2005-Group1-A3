@@ -24,7 +24,7 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 	void reset();
-
+	void changeLabel();
 private:
 	/*Label* m_pStartLabel;
 	Label* m_pInstructionsLabel;*/
@@ -65,7 +65,12 @@ private:
 	glm::vec2 m_position = glm::vec2(0.0f, 0.0f);
 	glm::vec2 m_velocity = glm::vec2(0.0f, 0.0f);
 	glm::vec2 m_acceleration = glm::vec2(0.0f, 0.0f);
-
+	Label* lblBallMass;
+	Label* lblBrickMass;
+	Label* lblWallFriction;
+	float m_BallMass = 0.0f;
+	float m_BrickMass = 1.0f;
+	float m_WallFriction = 0.9f;
 	// Physics functions
 	//void m_move();
 };

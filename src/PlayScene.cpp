@@ -298,7 +298,7 @@ void PlayScene::start()
 	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
 	addChild(m_pVel);
 	
-	m_pVelBullet = new Label("Velocity of 1st Bullet in y: (0,0)", "Consolas", 20, white);
+	m_pVelBullet = new Label("Velocity of 1st Bullet in y: 0", "Consolas", 20, white);
 	m_pVelBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 90.0f);
 	addChild(m_pVelBullet);
 	
@@ -328,8 +328,11 @@ void PlayScene::changeLabel() {
 	
 	text = "Bullet Spawn Timer: " + std::to_string(bulletSpawnTimerinSec)+" s";
 	m_pSpawnTimer->setText(text);
-	text = "Gravity: " + std::to_string(m_pPool->m_gravity) + " m/s^2";
-	m_pGravity->setText(text);
+	if (m_pPool)
+	{
+		text = "Gravity: " + std::to_string(m_pPool->m_gravity) + " m/s^2";
+		m_pGravity->setText(text);
+	}
 }
 
 

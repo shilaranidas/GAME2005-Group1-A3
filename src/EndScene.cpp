@@ -73,7 +73,7 @@ void EndScene::update()
 	//{
 	if (m_pBall != NULL)
 		m_pBall->update();
-	if (m_pBrick->isActive)
+	if (m_pBrick->isActive && m_pBall != NULL)
 	{
 		CollisionManager::circleAABBCheck(m_pBall, m_pBrick);
 	}
@@ -260,11 +260,25 @@ void EndScene::start()
 		m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 570.0f);
 
 		addChild(m_pInstructionsLabel);
+		lblBallMass = new Label("Ball Mass: 1Kg", "Consolas", 20, white);
+		lblBallMass->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 10.0f);
+		addChild(lblBallMass);
+
+		lblBrickMass = new Label("Brick Mass: 1Kg", "Consolas", 20, white);
+		lblBrickMass->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
+		addChild(lblBrickMass);
+
+		lblWallFriction = new Label("Wall Friction: 0.9", "Consolas", 20, white);
+		lblWallFriction->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 50.0f);
+		addChild(lblWallFriction);
 }
 
 void EndScene::reset()
 {
 	m_pBall = NULL;
+	m_WallFriction = 0.9f;
+	m_BrickMass = 20.0f;
+	m_BallMass = 0.0f;
 }
 
 
@@ -273,7 +287,17 @@ void EndScene::StartSimulation() {
 	m_pBall->reset();
 	m_pBrick->isActive = true;
 }
+void EndScene::changeLabel() {
+	std::string text = "Ball Mass: " + std::to_string(m_BallMass) + " Kg";
+	lblBallMass->setText(text);
+	
+	text = "Brick Mass: " + std::to_string(m_BrickMass)+" Kg";
+	lblBrickMass->setText(text);
 
+	text = "Wall Friction: " + std::to_string(m_WallFriction) ;
+	lblWallFriction->setText(text);
+	
+}
 
 void EndScene::m_updateUI()
 {
@@ -298,9 +322,12 @@ void EndScene::m_updateUI()
 	{
 		reset();
 	}
+	ImGui::Separator();
+	if (ImGui::SliderFloat("Ball Mass (kg)", &m_BallMass, 0.1f, 15, "%.1f"));
+	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_BrickMass, 0.1f, 50, "%.1f"));
+	if (ImGui::SliderFloat("Wall Friction", &m_WallFriction, 0.1f, 1, "%.1f"));
 
-	
-
+	changeLabel();
 	
 
 	// Main Window End

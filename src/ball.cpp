@@ -62,7 +62,8 @@ void Ball::update()
 }
 void Ball::m_move()
 {
-	glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity * 2.0f;
+	//getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
+	glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity;
 	getTransform()->position=newPosition;
 }
 void Ball::clean()
