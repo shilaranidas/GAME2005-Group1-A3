@@ -302,6 +302,7 @@ void EndScene::StartSimulation() {
 	m_pBall->reset();
 	m_pBrick->isActive = true;
 	m_pBall->isActive = true;
+	m_pBall->changeShape();
 }
 void EndScene::changeLabel() {
 	std::string text = "Brick Mass: " + std::to_string(m_pBrick->m_Mass) + " Kg";
@@ -351,7 +352,11 @@ void EndScene::m_updateUI()
 	if (ImGui::SliderFloat("Ball Mass (kg)", &m_pBall->m_Mass, 0.1f, 15, "%.1f"));
 	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_pBrick->m_Mass, 0.1f, 50, "%.1f"));
 	if (ImGui::SliderFloat("Wall Friction", &m_pBall->m_WallFriction, 0.1f, 1, "%.1f"));
-
+	//0 for circle, 1 for triangle, 2 for square, 3 for pentagon
+	ImGui::RadioButton("Circle", &m_pBall->Shape, 0); ImGui::SameLine();
+	ImGui::RadioButton("Triangle", &m_pBall->Shape, 1); ImGui::SameLine();
+	ImGui::RadioButton("Square", &m_pBall->Shape, 2); ImGui::SameLine();
+	ImGui::RadioButton("Pentagon", &m_pBall->Shape, 3);
 	changeLabel();
 	
 

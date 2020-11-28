@@ -17,6 +17,7 @@ public:
 	void m_checkBounds();
 	void m_move();
 	void reset();
+	void changeShape();
 	//void addForce(glm::vec2 Amount);
 	//void move();
 
@@ -26,6 +27,7 @@ public:
 	float m_PPM = 1.0f;
 	float m_WallFriction = 0.9f;
 	float m_Mass = 1.0f;
+	int Shape = 0;//0 for circle, 1 for triangle, 2 for square, 3 for pentagon
 	//float Mass;
 	//float nextPosition;
 //	bool showWire;

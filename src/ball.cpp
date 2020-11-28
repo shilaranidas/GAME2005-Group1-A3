@@ -10,9 +10,12 @@
 
 Ball::Ball()
 {
-	TextureManager::Instance()->load("../Assets/textures/circle.png", "ball");
+	TextureManager::Instance()->load("../Assets/textures/circle.png", "circle");
+	TextureManager::Instance()->load("../Assets/textures/square.png", "square");
+	TextureManager::Instance()->load("../Assets/textures/triangle.png", "triangle");
+	TextureManager::Instance()->load("../Assets/textures/pentagon.png", "pentagon");
 
-	auto size = TextureManager::Instance()->getTextureSize("ball");
+	auto size = TextureManager::Instance()->getTextureSize("circle");
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -32,6 +35,34 @@ Ball::Ball()
 Ball::~Ball()
 = default;
 
+void Ball::changeShape()
+{
+	//0 for circle, 1 for triangle, 2 for square, 3 for pentagon
+	if (Shape == 0)
+	{	
+		auto size = TextureManager::Instance()->getTextureSize("circle");
+		setWidth(size.x);
+		setHeight(size.y);
+	}
+	else if (Shape == 1)
+	{
+		auto size = TextureManager::Instance()->getTextureSize("triangle");
+		setWidth(size.x);
+		setHeight(size.y);
+	}
+	else if (Shape == 2)
+	{
+		auto size = TextureManager::Instance()->getTextureSize("square");
+		setWidth(size.x);
+		setHeight(size.y);
+	}
+	else if (Shape == 3)
+	{
+		auto size = TextureManager::Instance()->getTextureSize("pentagon");
+		setWidth(size.x);
+		setHeight(size.y);
+	}
+}
 void Ball::draw()
 {
 	// alias for x and y
@@ -40,7 +71,27 @@ void Ball::draw()
 	
 
 	// draw the Bullet
-	TextureManager::Instance()->draw("ball", x, y, 0, 255, true);
+	//TextureManager::Instance()->draw("ball", x, y, 0, 255, true);
+	if (Shape == 0)
+	{
+		
+		TextureManager::Instance()->draw("circle", x, y, 0, 255, true);
+	}
+	else if (Shape == 1)
+	{
+		
+		TextureManager::Instance()->draw("triangle", x, y, 0, 255, true);
+	}
+	else if (Shape == 2)
+	{
+		
+		TextureManager::Instance()->draw("square", x, y, 0, 255, true);
+	}
+	else if (Shape == 3)
+	{
+		
+		TextureManager::Instance()->draw("pentagon", x, y, 0, 255, true);
+	}
 	//Util::DrawCapsule(getTransform()->position , getWidth(), getHeight());
 	Util::DrawRect(getTransform()->position - glm::vec2(getWidth() * 0.5f, getHeight() * 0.5f), getWidth(), getHeight());
 }
