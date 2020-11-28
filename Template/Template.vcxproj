@@ -163,7 +163,6 @@
     <ClCompile Include="..\include\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\include\IMGUI_SDL\imgui_sdl.cpp" />
     <ClCompile Include="..\src\ball.cpp" />
-    <ClCompile Include="..\src\BallScene.cpp" />
     <ClCompile Include="..\src\Brick.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
@@ -184,7 +183,6 @@
     <ClCompile Include="..\src\PolygonShape.cpp" />
     <ClCompile Include="..\src\Renderer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
-    <ClCompile Include="..\src\Scene2.cpp" />
     <ClCompile Include="..\src\ship.cpp" />
     <ClCompile Include="..\src\SoundManager.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
@@ -205,7 +203,6 @@
     <ClInclude Include="..\include\IMGUI_SDL\imgui_sdl.h" />
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\ball.h" />
-    <ClInclude Include="..\src\BallScene.h" />
     <ClInclude Include="..\src\BoxCollider.h" />
     <ClInclude Include="..\src\Brick.h" />
     <ClInclude Include="..\src\Bullet.h" />
@@ -237,7 +234,6 @@
     <ClInclude Include="..\src\Renderer.h" />
     <ClInclude Include="..\src\RigidBody.h" />
     <ClInclude Include="..\src\Scene.h" />
-    <ClInclude Include="..\src\Scene2.h" />
     <ClInclude Include="..\src\SceneState.h" />
     <ClInclude Include="..\src\ShapeType.h" />
     <ClInclude Include="..\src\ship.h" />

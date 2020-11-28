@@ -132,14 +132,8 @@
     <ClCompile Include="..\src\ball.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Scene2.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Brick.cpp">
       <Filter>Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BallScene.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PolygonShape.cpp">
       <Filter>Core</Filter>
@@ -302,14 +296,8 @@
     <ClInclude Include="..\src\ball.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Scene2.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Brick.h">
       <Filter>Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BallScene.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
