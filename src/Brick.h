@@ -25,13 +25,16 @@ public:
 	float m_PPM = 1.0f;
 	float m_Mass = 15.0f;
 	bool isActive = false;
+	int isHorizontal = 1;//1 for horizontal, 0 for vertical
 	glm::vec2 getCurrentDirection() const;
 	void setCurrentDirection(glm::vec2 newDirection);
+	void changeHorizontal();
 private:
 	void m_checkBounds();
 	void m_reset();
 	glm::vec2 m_currentDirection;
 	float m_maxSpeed;
+	float angle=0;
 };
 
 

@@ -35,7 +35,23 @@ void Brick::draw()
 	const auto y = getTransform()->position.y;
 
 	// draw the ship
-	TextureManager::Instance()->draw("brick", x, y, 0, 255, true);
+	TextureManager::Instance()->draw("brick", x, y, angle, 255, true);
+}
+void Brick::changeHorizontal() {
+	if (isHorizontal == 0)
+	{
+		angle = 90;
+		auto size = TextureManager::Instance()->getTextureSize("brick");
+		setWidth(size.y);
+		setHeight(size.x);
+	}
+	else
+	{
+		angle = 0;
+		auto size = TextureManager::Instance()->getTextureSize("brick");
+		setWidth(size.x);
+		setHeight(size.y);
+	}
 }
 float Brick::getMaxSpeed() const
 {

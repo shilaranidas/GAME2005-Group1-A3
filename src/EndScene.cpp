@@ -293,7 +293,9 @@ void EndScene::reset()
 	m_pBall->m_Mass = 1.0f;
 	m_pBall->getTransform()->position = glm::vec2(300, 300);
 	m_pBall->isActive = false;
+	m_pBall->Shape = 0;
 	m_pBrick->isActive = false;
+	m_pBrick->isHorizontal = 1;
 }
 
 
@@ -303,6 +305,7 @@ void EndScene::StartSimulation() {
 	m_pBrick->isActive = true;
 	m_pBall->isActive = true;
 	m_pBall->changeShape();
+	m_pBrick->changeHorizontal();
 }
 void EndScene::changeLabel() {
 	std::string text = "Brick Mass: " + std::to_string(m_pBrick->m_Mass) + " Kg";
@@ -353,10 +356,15 @@ void EndScene::m_updateUI()
 	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_pBrick->m_Mass, 0.1f, 50, "%.1f"));
 	if (ImGui::SliderFloat("Wall Friction", &m_pBall->m_WallFriction, 0.1f, 1, "%.1f"));
 	//0 for circle, 1 for triangle, 2 for square, 3 for pentagon
+	ImGui::Text("Ball: "); ImGui::SameLine();
 	ImGui::RadioButton("Circle", &m_pBall->Shape, 0); ImGui::SameLine();
 	ImGui::RadioButton("Triangle", &m_pBall->Shape, 1); ImGui::SameLine();
 	ImGui::RadioButton("Square", &m_pBall->Shape, 2); ImGui::SameLine();
 	ImGui::RadioButton("Pentagon", &m_pBall->Shape, 3);
+	ImGui::Text("Brick: "); ImGui::SameLine();
+	ImGui::RadioButton("Vertical", &m_pBrick->isHorizontal, 0); ImGui::SameLine();
+	ImGui::RadioButton("Horizontal", &m_pBrick->isHorizontal, 1); 
+	
 	changeLabel();
 	
 
