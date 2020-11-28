@@ -364,7 +364,7 @@ void EndScene::m_updateUI()
 	ImGui::Text("Brick: "); ImGui::SameLine();
 	ImGui::RadioButton("Vertical", &m_pBrick->isHorizontal, 0); ImGui::SameLine();
 	ImGui::RadioButton("Horizontal", &m_pBrick->isHorizontal, 1); 
-	
+	m_pBrick->changeHorizontal();
 	changeLabel();
 	
 
