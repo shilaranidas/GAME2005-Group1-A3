@@ -203,6 +203,9 @@ void EndScene::start()
 	SoundManager::Instance().load(
 		"../Assets/audio/thunder.ogg",
 		"thunder", SOUND_SFX);
+	SoundManager::Instance().load(
+		"../Assets/audio/bounce.ogg",
+		"bounce", SOUND_SFX);
 
 	m_position = glm::vec2(400.0f, 500.0f);
 	m_pBrick = new Brick();
