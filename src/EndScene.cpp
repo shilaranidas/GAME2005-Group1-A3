@@ -197,12 +197,10 @@ void EndScene::start()
 {
 	TextureManager::Instance()->load("../Assets/textures/bg.png", "bg");
 	
+	
 	SoundManager::Instance().load(
-		"../Assets/audio/yay.ogg",
-		"yay", SOUND_SFX);
-	SoundManager::Instance().load(
-		"../Assets/audio/thunder.ogg",
-		"thunder", SOUND_SFX);
+		"../Assets/audio/metal.ogg",
+		"metal", SOUND_SFX);
 	SoundManager::Instance().load(
 		"../Assets/audio/bounce.ogg",
 		"bounce", SOUND_SFX);

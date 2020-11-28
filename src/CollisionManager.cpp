@@ -371,7 +371,7 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 				break;
 			case BRICK:
 				{
-					SoundManager::Instance().playSound("yay", 0);
+					SoundManager::Instance().playSound("metal", 0);
 					auto velocityX = object1->getRigidBody()->velocity.x;
 					auto velocityY = object1->getRigidBody()->velocity.y;
 					Ball* ball = static_cast<Ball*>(object1);
