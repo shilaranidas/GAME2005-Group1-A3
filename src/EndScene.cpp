@@ -208,9 +208,11 @@ void EndScene::start()
 	m_position = glm::vec2(400.0f, 500.0f);
 	m_pBrick = new Brick();
 	m_pBrick->getTransform()->position = m_position;
+	m_pBrick->m_PPM = m_PPM;
 	addChild(m_pBrick);
 	m_pBall = new Ball();
 	m_pBall->isActive = false;
+	m_pBall->m_PPM = m_PPM;
 	m_pBall->getTransform()->position = glm::vec2(300,300);
 	addChild(m_pBall);
 	m_velocity = glm::vec2(0.0, 0.0); //glm::vec2(1.0f, m_velocity.y);
@@ -287,7 +289,7 @@ void EndScene::start()
 void EndScene::reset()
 {
 	//m_pBall = NULL;
-
+	m_PPM = 1.0f;
 	m_pBall->m_WallFriction = 0.9f;
 	m_pBrick->m_Mass = 20.0f;
 	m_pBrick->getTransform()->position = glm::vec2(400, 500);
@@ -303,6 +305,8 @@ void EndScene::reset()
 void EndScene::StartSimulation() {
 	
 	m_pBall->reset();
+	m_pBrick->m_PPM = m_PPM;
+	m_pBall->m_PPM = m_PPM;
 	m_pBrick->isActive = true;
 	m_pBall->isActive = true;
 	m_pBall->changeShape();
@@ -353,6 +357,7 @@ void EndScene::m_updateUI()
 		reset();
 	}
 	ImGui::Separator();
+	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 0.1f, 30.0f, "%.1f"));
 	if (ImGui::SliderFloat("Ball Mass (kg)", &m_pBall->m_Mass, 0.1f, 15, "%.1f"));
 	if (ImGui::SliderFloat("Brick Mass (Kg)", &m_pBrick->m_Mass, 0.1f, 50, "%.1f"));
 	if (ImGui::SliderFloat("Wall Friction", &m_pBall->m_WallFriction, 0.1f, 1, "%.1f"));

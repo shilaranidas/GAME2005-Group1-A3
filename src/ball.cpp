@@ -116,7 +116,7 @@ void Ball::m_move()
 	if (isActive)
 	{
 		//getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
-		glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity;
+		glm::vec2 newPosition = getTransform()->position + getRigidBody()->velocity*m_PPM;
 		getTransform()->position = newPosition;
 	}
 }

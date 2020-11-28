@@ -366,7 +366,7 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderFloat("bullet Spawn Timer Duration (s)", &bulletSpawnTimerinSec, 0.001f, 5.0f, "%.1f"))
 		bulletSpawnTimerDuration = bulletSpawnTimerinSec * 1000;
 	if (ImGui::SliderInt("No of Bullet", &m_noOfBullet, 0, 100));
-	if (ImGui::SliderFloat("Speed of player (m/s)", &m_pPlayer->SPEED, 0.1f, 100/ m_PPM, "%.1f"));
+	if (ImGui::SliderFloat("Speed of player (m/s)", &m_pPlayer->SPEED, 0.1f, 100, "%.1f"));
 	if (ImGui::SliderFloat("Gravity (m/s^2)", &m_pPool->m_gravity, 0.1f, 15 , "%.1f"));
 	changeLabel();
 	

@@ -33,7 +33,7 @@ private:
 	Brick* m_pBrick;
 //	MoveState m_moveState;
 	glm::vec2 m_speedFactor;
-	
+	float m_PPM = 1.0f; // pixels per meter - scale
 	
 	// Bullet Stuff
 	Ball* m_pBall;
@@ -61,7 +61,7 @@ private:
 
 	// Physics Variables
 	float m_gravity = 9.8f;
-	int m_PPM = 10; // pixels per meter
+
 	glm::vec2 m_position = glm::vec2(0.0f, 0.0f);
 	glm::vec2 m_velocity = glm::vec2(0.0f, 0.0f);
 	glm::vec2 m_acceleration = glm::vec2(0.0f, 0.0f);
