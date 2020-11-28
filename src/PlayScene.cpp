@@ -295,11 +295,11 @@ void PlayScene::start()
 	addChild(m_pNoOfBullet);
 	
 	m_pVel = new Label("Speed of player: 100m/s", "Consolas", 20, white);
-	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 30.0f);
+	m_pVel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 30.0f);
 	addChild(m_pVel);
 	
 	m_pVelBullet = new Label("Velocity of 1st Bullet in y: 0", "Consolas", 20, white);
-	m_pVelBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.8f, 90.0f);
+	m_pVelBullet->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.7f, 90.0f);
 	addChild(m_pVelBullet);
 	
 	
@@ -320,9 +320,11 @@ void PlayScene::changeLabel() {
 	std::string text = "Speed of player: " + std::to_string(m_pPlayer->SPEED) + " m/s";
 	m_pVel->setText(text);
 	if(m_pPool)
-		if(m_pPool->active.size()>0)
-			text = "Velocity of 1st Bullet in y: " + std::to_string(m_pPool->active.at(0)->getRigidBody()->velocity.y)+ " m/s^2";
-	m_pVelBullet->setText(text);
+		if (m_pPool->active.size() > 0)
+		{
+			text = "Velocity of 1st Bullet in y: " + std::to_string(m_pPool->active.at(0)->getRigidBody()->velocity.y) + " m/s^2";
+			m_pVelBullet->setText(text);
+		}
 	text = "No of Bullet: " + std::to_string(m_noOfBullet) ;
 	m_pNoOfBullet->setText(text);
 	
