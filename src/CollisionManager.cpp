@@ -349,7 +349,7 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 	int halfBoxWidth = boxWidth * 0.5f;
 	const auto boxHeight = object2->getHeight();
 	int halfBoxHeight = boxHeight * 0.5f;
-
+	float newVelx, newVely;
 	const auto boxStart = object2->getTransform()->position - glm::vec2(boxWidth * 0.5f, boxHeight * 0.5f);
 
 	if (circleAABBsquaredDistance(circleCentre, circleRadius, boxStart, boxWidth, boxHeight) <= (circleRadius * circleRadius))
@@ -374,7 +374,10 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 					SoundManager::Instance().playSound("yay", 0);
 					auto velocityX = object1->getRigidBody()->velocity.x;
 					auto velocityY = object1->getRigidBody()->velocity.y;
-					if (circleCentre.x+circleRadius + velocityX > boxStart.x &&
+					Ball* ball = static_cast<Ball*>(object1);
+					Brick* brick = static_cast<Brick*>(object2);
+				std:: cout << Util::magnitude(object1->getRigidBody()->velocity)<<":" << Util::magnitude(object2->getRigidBody()->velocity) << std::endl;
+					/*if (circleCentre.x+circleRadius + velocityX > boxStart.x &&
 						circleCentre.x-circleRadius + velocityX  < boxStart.x + boxWidth &&
 						circleCentre.y + circleRadius > boxStart.y &&
 						circleCentre.y - circleRadius < boxStart.y + boxHeight) {
@@ -385,36 +388,61 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 						circleCentre.y + circleRadius + velocityY > boxStart.y &&
 						circleCentre.y - circleRadius + velocityY < boxStart.y + boxHeight) {
 						velocityY *= -1;
+					}*/
+					//v1f=v1i*(m1-m2)/(m1+m2)+ v2i*2m2/(m1+m2)
+					newVelx = velocityX * (ball->m_Mass - brick->m_Mass) / (ball->m_Mass + brick->m_Mass)
+						+ object2->getRigidBody()->velocity.x * 2 * brick->m_Mass / (ball->m_Mass + brick->m_Mass);
+					newVely = velocityY * (ball->m_Mass - brick->m_Mass) / (ball->m_Mass + brick->m_Mass)
+						+ object2->getRigidBody()->velocity.y * 2 * brick->m_Mass / (ball->m_Mass + brick->m_Mass);
+					if ((attackVector.x > 0 && attackVector.y < 0) 
+						|| (attackVector.x < 0 && attackVector.y < 0)
+						)
+						// top right or top left
+					{
+						
+						if (angle <= 45)
+						{
+							newVely *= -1;
+							if (Util::magnitude(object1->getRigidBody()->velocity) > 0.5 && Util::magnitude(object2->getRigidBody()->velocity) > 0.5)
+								object1->getRigidBody()->velocity = glm::vec2(newVelx, newVely)*ball->m_WallFriction;
+							else
+								object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY) * ball->m_WallFriction;
+						}
+						else
+						{
+							newVelx *= -1;
+							if (Util::magnitude(object1->getRigidBody()->velocity) > 0.5 && Util::magnitude(object2->getRigidBody()->velocity) > 0.5)
+								object1->getRigidBody()->velocity = glm::vec2(newVelx, newVely) * ball->m_WallFriction;
+							else
+								object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY) * ball->m_WallFriction;
+						}
 					}
-					object1->getRigidBody()->velocity = glm::vec2(velocityX, velocityY);
-					//if ((attackVector.x > 0 && attackVector.y < 0) 
-					//	|| (attackVector.x < 0 && attackVector.y < 0)
-					//	)
-					//	// top right or top left
-					//{
-					//	
-					//	if (angle <= 45)
-					//	{
-					//		object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
-					//	}
-					//	else
-					//	{
-					//		object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
-					//	}
-					//}
 
-					//if ((attackVector.x > 0 && attackVector.y > 0) || (attackVector.x < 0 && attackVector.y > 0))
-					//	// bottom right or bottom left
-					//{
-					//	if (angle <= 135)
-					//	{
-					//		object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY);
-					//								}
-					//	else
-					//	{
-					//		object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY);
-					//								}
-					//}
+					if ((attackVector.x > 0 && attackVector.y > 0) || (attackVector.x < 0 && attackVector.y > 0))
+						// bottom right or bottom left
+					{
+						if (angle <= 135)
+						{
+							newVelx *= -1;
+							if (Util::magnitude(object1->getRigidBody()->velocity) > 0.5 && Util::magnitude(object2->getRigidBody()->velocity) > 0.5)
+								object1->getRigidBody()->velocity = glm::vec2(newVelx, newVely) * ball->m_WallFriction;
+							else
+								object1->getRigidBody()->velocity = glm::vec2(-velocityX, velocityY) * ball->m_WallFriction;
+													}
+						else
+						{
+							newVely *= -1;
+							if (Util::magnitude(object1->getRigidBody()->velocity) > 0.5 && Util::magnitude(object2->getRigidBody()->velocity) > 0.5)
+								object1->getRigidBody()->velocity = glm::vec2(newVelx, newVely) * ball->m_WallFriction;
+							else
+								object1->getRigidBody()->velocity = glm::vec2(velocityX, -velocityY) * ball->m_WallFriction;
+													}
+					}
+					/*if(Util::magnitude(object1->getRigidBody()->velocity)>0.5)
+						object1->getRigidBody()->velocity = glm::vec2(newVelx, newVely);
+					else
+						object1->getRigidBody()->velocity = glm::vec2(velocityX, velocityY);*/
+
 				}
 				
 

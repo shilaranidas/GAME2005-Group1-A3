@@ -9,7 +9,9 @@
 #include "ship.h"
 #include <GLM/gtx/norm.hpp>
 #include "SoundManager.h"
-
+#include "ball.h"
+#include "Brick.h"
+#include "Util.h"
 class CollisionManager
 {
 public:

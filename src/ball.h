@@ -25,7 +25,7 @@ public:
 	//float m_gravity = 9.8f;
 	float m_PPM = 1.0f;
 	float m_WallFriction = 0.9f;
-	float m_Mass = 0.0f;
+	float m_Mass = 1.0f;
 	//float Mass;
 	//float nextPosition;
 //	bool showWire;

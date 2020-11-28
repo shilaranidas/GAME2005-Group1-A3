@@ -290,7 +290,7 @@ void EndScene::reset()
 	m_pBall->m_WallFriction = 0.9f;
 	m_pBrick->m_Mass = 20.0f;
 	m_pBrick->getTransform()->position = glm::vec2(400, 500);
-	m_pBall->m_Mass = 0.0f;
+	m_pBall->m_Mass = 1.0f;
 	m_pBall->getTransform()->position = glm::vec2(300, 300);
 	m_pBall->isActive = false;
 	m_pBrick->isActive = false;
