@@ -66,16 +66,20 @@ void EndScene::update()
 {
 	updateDisplayList();
 	//m_move();
+	if (m_pBrick != NULL)
 	m_pBrick->update();
 	//m_pPlanet->update();
 	//m_pMine->update();
 	//for (auto ball : m_pBalls)
 	//{
-	if (m_pBall->isActive)
-		m_pBall->update();
-	if (m_pBrick->isActive && m_pBall->isActive)
+	if (m_pBall != NULL)
 	{
-		CollisionManager::circleAABBCheck(m_pBall, m_pBrick);
+		if (m_pBall->isActive)
+			m_pBall->update();
+		if (m_pBrick->isActive && m_pBall->isActive)
+		{
+			CollisionManager::circleAABBCheck(m_pBall, m_pBrick);
+		}
 	}
 	/*
 	Util::DrawLine(glm::vec2(0, 0), glm::vec2(0, Config::SCREEN_HEIGHT));
